@@ -1,9 +1,7 @@
 
 package snmp;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import modelo.entites.Celda;
 import modelo.entites.Inputs;
 import modelo.entites.Nodo;
@@ -24,7 +22,7 @@ public class SnmpDataSource {
     
     private Celda celda;
 
-    public void buildCelda(Nodo nodo){
+    private void buildCelda(Nodo nodo){
         celda = new Celda();
         Inputs input = new Inputs();
         Parametros parametros = new Parametros();
@@ -70,14 +68,62 @@ public class SnmpDataSource {
         stackFault.setFaultTime(new Date());
         stackFault.setId(1);
         stackFault.setStacknumber(1);
-        List<StackFault> stfList = new ArrayList<>();
-        stfList.add(stackFault);
-        celda.setStackFault(stfList);
+        celda.setStackFault(stackFault);
+        stackSystemInfo.setFaultDescription("falla ejemplo");
+        stackSystemInfo.setId(1);
+        stackSystemInfo.setStackNumber(2);
+        stackSystemInfo.setSystemStackRuntime(2.2);
+        stackSystemInfo.setSystemstackCycles(34);
+        stackSystemInfo.setTimeStamp(new Date());
+        celda.setSystemInfo(systemInfo);
+        status.setGrossPower(23);
+        status.setId(1);
+        status.setLowFuel(false);
+        status.setNetKilowattHour(2300);
+        status.setOutOfFuel(false);
+        status.setOutputCurrrent(2.3);
+        status.setOutputVoltage(52);
+        status.setStackFaulted(true);
+        status.setSystemFaulted(false);
+        status.setSystemOnline(true);
+        status.setSystemStateDesc("Descripcion ejemplo");
+        status.setTimeStamp(new Date());
+        status.setTotalSystemCycles(20);
+        status.setTotalSystemRuntime(230.4);
+        celda.setStatus(status);
+        systemfault.setFaultDescription("systema falla ejemplo");
+        systemfault.setFaultId(2);
+        systemfault.setFaultTime(new Date());
+        systemfault.setId(1);
+        celda.setSystemFault(systemfault);
+        systemInfo.setId(1);
+        systemInfo.setNetKilowattHours(23.4);
+        systemInfo.setNumPowerDemands(30);
+        systemInfo.setTimeStamp(new Date());
+        systemInfo.setTimeUntilFilterMaint(10.2);
+        systemInfo.setTotalSystemCycles(20);
+        systemInfo.setTotalSystemRuntime(20.3);
+        celda.setSystemInfo(systemInfo);
+        systemWarning.setId(1);
+        systemWarning.setWarningDescription("advertencia ejemplo");
+        systemWarning.setWarningId(4);
+        systemWarning.setWarningTime(new Date());
+        celda.setSystemWaring(systemWarning);
+        
+        celda.setGmtOffsetHours(23);
+        celda.setGmtOffsetQuarter(3);
+        celda.setGpsLatitude("-33333333333");
+        celda.setGpsLongitud("-34322222");
+        celda.setId(1);
+        celda.setSystemPartNumber("serial ballard");
+        celda.setSystemPartNumber("partn number");
+        celda.setSystemSerial("233444-serial");
+        celda.setSystemTimeLocal(4);
         
     }
 
-    public SnmpDataSource() {
-       
+    public SnmpDataSource(Nodo nodo) {
+        buildCelda(nodo);
     }
    
     

@@ -28,9 +28,9 @@ public class Celda {
     private RuntimeData runtimeData;
     private Inputs inputs;
     private Parametros parametros;
-    private List<SystemFault> systemFault;
-    private List<SystemWarning> systemWaring;
-    private List<StackFault> stackFault;
+    private SystemFault systemFault;
+    private SystemWarning systemWaring;
+    private StackFault stackFault;
 
     public Celda() {
     }
@@ -155,29 +155,29 @@ public class Celda {
         this.parametros = parametros;
     }
 
-    public List<SystemFault> getSystemFault() {
+    public SystemFault getSystemFault() {
         return systemFault;
     }
 
-    public void setSystemFault(List<SystemFault> systemFault) {
+    public void setSystemFault(SystemFault systemFault) {
         this.systemFault = systemFault;
     }
 
-    public List<SystemWarning> getSystemWaring() {
+    public SystemWarning getSystemWaring() {
         return systemWaring;
     }
 
-    public void setSystemWaring(List<SystemWarning> systemWaring) {
+    public void setSystemWaring(SystemWarning systemWaring) {
         this.systemWaring = systemWaring;
     }
 
-    public List<StackFault> getStackFault() {
+    public StackFault getStackFault() {
         return stackFault;
     }
 
-    public void setStackFault(List<StackFault> stackFault) {
+    public void setStackFault(StackFault stackFault) {
         this.stackFault = stackFault;
     }
-    
+
     
 }
