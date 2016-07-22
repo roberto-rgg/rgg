@@ -21,6 +21,7 @@ public class RuntimeData {
     private boolean runtimeSystemDoorOpen;
     private int runtimeSystemNeedsPowerCycle;
     private boolean runtimeMainBoardConnected;
+    
 
     public int getId() {
         return id;

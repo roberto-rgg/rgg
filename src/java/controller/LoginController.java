@@ -14,7 +14,7 @@ import modelo.dao.interfaces.UsuarioDAO;
 import modelo.entites.Usuario;
 
 /**
- * Servlet encargado de controlar la atenticación de usuarios.
+ * Servlet encargado de controlar la autenticación de usuarios.
  * @author Roberto
  */
 @WebServlet(name = "LoginController", urlPatterns = {"/LoginController"})
@@ -37,10 +37,10 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String nombre = request.getParameter("input_correo");
+        String correo = request.getParameter("input_correo");
         String clave = request.getParameter("input_clave");
 
-        Usuario usuario = login(nombre, clave);
+        Usuario usuario = login(correo, clave);
 
         if (usuario != null) {
             request.getSession().setAttribute(USUARIO, usuario);
@@ -58,16 +58,16 @@ public class LoginController extends HttpServlet {
     /**
      * Devuelve el usuario correspondiente al nombre y clave entregada.
      *
-     * @param nombre
+     * @param correo
      * @param clave
      * @return usuario existente, null si no existe el usuario.
      */
-    private Usuario login(String nombre, String clave) {
+    private Usuario login(String correo, String clave) {
         UsuarioDAO dao = new UsuarioImplDAO();
         List<Usuario> usuarios = dao.read();
         if (usuarios != null) {
             for (Usuario usuario : usuarios) {
-                if (usuario.getClave().equals(clave) && usuario.getCorreo().equals(nombre)) {
+                if (usuario.getClave().equals(clave) && usuario.getCorreo().equals(correo)) {
                     return usuario;
                 }
             }

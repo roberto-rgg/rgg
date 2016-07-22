@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package modelo.entites;
 
 import java.util.List;
@@ -11,7 +7,7 @@ import java.util.List;
  *
  * @author Roberto
  */
-public class Celda {
+public class ReportFuelCell {
     
     private int id;
     private Nodo nodo;
@@ -22,19 +18,29 @@ public class Celda {
     private int gmtOffsetHours;
     private int gmtOffsetQuarter;
     private int systemTimeLocal;
-    private List<StackSystemInfo> stacks;
+    
     private Status status;
     private SystemInfo systemInfo;
     private RuntimeData runtimeData;
     private Inputs inputs;
     private Parametros parametros;
-    private SystemFault systemFault;
-    private SystemWarning systemWaring;
-    private StackFault stackFault;
+    
+    private List<StackSystemInfo> stacks;
+    private List<SystemFault> systemFault;
+    private List<SystemWarning> systemWaring;
+    private List<StackFault> stackFault;
 
-    public Celda() {
+    public ReportFuelCell() {
+        
     }
 
+    public int getNumberStacks(){
+        if(stacks!=null){
+            return stacks.size();
+        }
+        return 0;
+    }
+    
     public int getId() {
         return id;
     }
@@ -155,27 +161,27 @@ public class Celda {
         this.parametros = parametros;
     }
 
-    public SystemFault getSystemFault() {
+    public List<SystemFault> getSystemFault() {
         return systemFault;
     }
 
-    public void setSystemFault(SystemFault systemFault) {
+    public void setSystemFault(List<SystemFault> systemFault) {
         this.systemFault = systemFault;
     }
 
-    public SystemWarning getSystemWaring() {
+    public List<SystemWarning> getSystemWaring() {
         return systemWaring;
     }
 
-    public void setSystemWaring(SystemWarning systemWaring) {
+    public void setSystemWaring(List<SystemWarning> systemWaring) {
         this.systemWaring = systemWaring;
     }
 
-    public StackFault getStackFault() {
+    public List<StackFault> getStackFault() {
         return stackFault;
     }
 
-    public void setStackFault(StackFault stackFault) {
+    public void setStackFault(List<StackFault> stackFault) {
         this.stackFault = stackFault;
     }
 

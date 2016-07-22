@@ -6,7 +6,7 @@
 
 <%@page import="modelo.entites.Usuario"%>
 <%@page import="controller.LoginController"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="error_page.jsp" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -28,16 +28,71 @@
                 <%@include file="include/jsp/header.jsp" %>
 
                 <section id="right-content-wrapper">
-                    
+
                     <section class="page-header alternative-header">
                         <div class="page-header_title">
-                            
+
                             <h1>
-                                Estadísticas y reportes.
-                                <span class="page-header_subtitle">Bienvenido a Ballard Control</span>
+                                Principal.
+                                <span class="page-header_subtitle">Bienvenido</span>
                             </h1>
                         </div>
                     </section>
+
+
+                    <table class="table table-condensed" >
+                        <thead>
+                            <tr>
+                                <th>nombre variable OID</th>
+                                <th>valor</th>
+                                <th>descripcion</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>SYSTEM_PART_NUMBER </td>
+                                <td>${celda.systemPartNumber}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td> SYSTEM_SERIAL </td>
+                                <td>${celda.systemSerial}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td> GPS_LATITUDE</td>
+                                <td>${celda.gpsLatitude}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td> GPS_LONGITUDE</td>
+                                <td>${celda.gpsLongitud}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>GMT_OFFSET_HOURS </td>
+                                <td>${celda.gmtOffsetHours}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td> GMT_OFFSET_QUARTER_HOURS</td>
+                                <td>${celda.gmtOffsetQuarter}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td> SYSTEM_TIME_LOCAL </td>
+                                <td>${celda.systemTimeLocal}</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td> SYSTEM_STATE_DESC </td>
+                                <td>${celda.systemStateDesc}</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
 
                     <section class="page-content">
 

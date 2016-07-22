@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="snmp.Discovery"%>
-<%@page import="controller.SnmpController"%>
+<%@page import="controller.CeldaController"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="controller.LoginController"%>
 <%@page import="modelo.entites.Usuario"%>
@@ -22,7 +22,7 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style-main.css" rel="stylesheet">
-        <title>Home Usuario</title>
+        <title>Discovery Nodos</title>
     </head>
     <body>
         <jsp:useBean id="usuario" scope="session" class="modelo.entites.Usuario"></jsp:useBean>
@@ -79,12 +79,12 @@
                         <%
                             if (d.nodoIsOnline(n.getIp())) {
                         %>
-                        <form action="/BallardWeb/SnmpController" method="POST" >
-                            <input type="hidden" value="<%= n.getId()%>" name="<%= SnmpController.ID_NODO%>">
+                        <form action="/BallardWeb/CeldaController" method="POST" >
+                            <input type="hidden" value="<%= n.getId()%>" name="<%= CeldaController.PARAM_NODO%>">
+                            <input type="hidden" value="<%= CeldaController.MAIN %>" name="<%= CeldaController.PARAM_HOME%>">
                             <button class="btn btn-info" type="submit"   >
                                 Detalles
                             </button>
-
                         </form>
                         <% } else {%>
                         <button class="btn btn-danger disabled"  type="submit" >

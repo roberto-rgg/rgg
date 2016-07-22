@@ -51,9 +51,9 @@
         <nav id="sidebar">
             <ul>
                 <li>
-                    <a href="home.jsp">
+                    <a href="home.jsp" >
                         <span class="menu-item-ico"><i class="material-icons">dashboard</i></span>
-                        <span class="menu-item-name">Dashboard</span>
+                        <span class="menu-item-name">Página Principal</span>
                     </a>
                 </li>
                 <li>

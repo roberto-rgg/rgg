@@ -1,4 +1,3 @@
-
 package controller;
 
 import java.io.IOException;
@@ -10,18 +9,28 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.dao.NodoImplDAO;
 import modelo.dao.interfaces.NodoDAO;
-import modelo.entites.Celda;
+import modelo.entites.FuelCell;
+import modelo.entites.ReportFuelCell;
 import modelo.entites.Nodo;
+import snmp.SnmpDataSource;
 
 /**
  *
  * @author Roberto
  */
-@WebServlet(name = "SnmpController", urlPatterns = {"/SnmpController"})
-public class DiscoveryController extends HttpServlet {
+@WebServlet(name = "CeldaController", urlPatterns = {"/CeldaController"})
+public class CeldaController extends HttpServlet {
 
     private String pathDispatcher;
-    public static final String ID_NODO = "id_nodo";
+    private int idNodo;
+    private int home;
+    private FuelCell celda;
+    public static final String PARAM_NODO = "id_nodo";
+    public static final String PARAM_HOME = "id_home";
+    public static final int MAIN = 1;
+    public static final int ESTADISTICAS = 2;
+    public static final int PARAMETROS = 3;
+    public static final int ALARMAS = 4;
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,25 +44,32 @@ public class DiscoveryController extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        Nodo nodo = null;
-        String id_nodo = request.getParameter(ID_NODO);
-        if (id_nodo != null) {
-            NodoDAO dao = new NodoImplDAO();
-            nodo = dao.read(Integer.parseInt(id_nodo));
-            
+
+        if (request.getSession().getAttribute(LoginController.USUARIO) == null) {
+            request.setAttribute(LoginController.ERROR_MENSAJE, "Sesion ha Expirado");
+            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+            rd.forward(request, response);
         }
 
-        pathDispatcher = "home.jsp";
+        if (request.getParameter(PARAM_NODO) != null && request.getParameter(PARAM_HOME) != null) {
+            idNodo = Integer.parseInt(request.getParameter(PARAM_NODO));
+            home = Integer.parseInt(request.getParameter(PARAM_HOME));
+            request.getSession().setAttribute(PARAM_NODO, idNodo);
+            NodoDAO dao = new NodoImplDAO();
+            SnmpDataSource source = new SnmpDataSource(dao.read(idNodo));
+            celda = source.getCelda();
+
+            request.getSession().setAttribute("celda", celda);
+            pathDispatcher = "home.jsp";
+
+        }
+
         RequestDispatcher rd = request.getRequestDispatcher(pathDispatcher);
         rd.forward(request, response);
-        System.out.println("nombre del nodo :" + nodo.getDescripcion());
 
     }
 
-    public Celda getCelda(Nodo nodo){
-        return null;
-    }
-    
+
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
