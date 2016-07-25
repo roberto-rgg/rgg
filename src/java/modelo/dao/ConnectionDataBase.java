@@ -16,8 +16,8 @@ import java.sql.SQLException;
 public abstract class ConnectionDataBase {
 
     private static final String SERVIDOR = "jdbc:mysql://localhost/ballard";
-    private static final String USUARIO = "root";
-    private static final String CLAVE = "rockmetal";
+    private static final String USUARIO = "ballard";
+    private static final String CLAVE = "ballardweb2016.,";
     private static final String DRIVER = "com.mysql.jdbc.Driver";
     private static Connection connection;
 

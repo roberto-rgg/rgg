@@ -25,7 +25,7 @@
                     <form method="POST" action="/BallardWeb/LoginController" >
                         <div class="form-group">
                             <label for="input_usuario">Correo Electrónico</label>
-                            <input id="input_usuario" required="true" type="text" class="form-control"  name="input_correo" placeholder="Usuario">
+                            <input id="input_usuario" required="true" type="email" class="form-control"  name="input_correo" placeholder="Usuario">
                         </div>
                         <div class="form-group">
                             <label for="input_clave">Contraseña</label>

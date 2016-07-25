@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 import modelo.dao.NodoImplDAO;
 import modelo.dao.interfaces.NodoDAO;
 import modelo.entites.FuelCell;
-import modelo.entites.ReportFuelCell;
-import modelo.entites.Nodo;
 import snmp.SnmpDataSource;
 
 /**

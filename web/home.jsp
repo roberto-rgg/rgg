@@ -14,6 +14,14 @@
 <!--[if gt IE 8]><!--> 
 <html class="no-js"> <!--<![endif]-->
 
+    <%
+        if (request.getSession().getAttribute(LoginController.USUARIO) == null) {
+            request.setAttribute(LoginController.ERROR_MENSAJE, "Sesion ha Expirado");
+            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
+            rd.forward(request, response);
+        }
+    %>
+
     <!-- etiqueta head para home -->
     <%@include file="include/html/head-home.html" %>
 

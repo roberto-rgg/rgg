@@ -1,19 +1,8 @@
 
 package snmp;
 
-import java.util.Date;
-import modelo.entites.ReportFuelCell;
 import modelo.entites.FuelCell;
-import modelo.entites.Inputs;
 import modelo.entites.Nodo;
-import modelo.entites.Parametros;
-import modelo.entites.RuntimeData;
-import modelo.entites.StackFault;
-import modelo.entites.StackSystemInfo;
-import modelo.entites.Status;
-import modelo.entites.SystemFault;
-import modelo.entites.SystemInfo;
-import modelo.entites.SystemWarning;
 
 /**
  *
@@ -22,6 +11,13 @@ import modelo.entites.SystemWarning;
 public class SnmpDataSource {
     
     private FuelCell celda;
+    private SnmpCommunication com;
+    
+    public FuelCell findCelda(Nodo nodo){
+        
+        return null;
+    }
+    
 
     public void buildCelda(Nodo nodo){
         this.celda = new FuelCell();
@@ -154,5 +150,8 @@ public class SnmpDataSource {
     public void setCelda(FuelCell celda) {
         this.celda = celda;
     }
+    
+    
+    
     
 }
