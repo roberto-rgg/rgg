@@ -13,7 +13,6 @@ import org.snmp4j.PDU;
 import org.snmp4j.Snmp;
 import org.snmp4j.TransportMapping;
 import org.snmp4j.event.ResponseEvent;
-import org.snmp4j.mp.SnmpConstants;
 import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
@@ -33,9 +32,10 @@ public class SnmpCommunication {
     private String communityWrite;
     private int versionSnmp;
     private String ipAddress;
-    private String port;
+    private int port;
 
-    public SnmpCommunication(String communityRead, String communityWrite, int versionSnmp, String ipAddress, String port) {
+    public SnmpCommunication(String communityRead, String communityWrite,
+            int versionSnmp, String ipAddress, int port) {
         this.communityRead = communityRead;
         this.communityWrite = communityWrite;
         this.versionSnmp = versionSnmp;
@@ -43,7 +43,7 @@ public class SnmpCommunication {
         this.port = port;
     }
 
-    public SnmpCustomResponse sendGetString(String oid) throws IOException {
+    public SnmpCustomResponse sendGetProccess(String oid) throws IOException {
 
         SnmpCustomResponse respuestaSnmp = new SnmpCustomResponse();
         respuestaSnmp.setNullPDU(false);
@@ -98,9 +98,12 @@ public class SnmpCommunication {
         return respuestaSnmp;
     }
 
-    public SnmpCustomResponse sendGetBashProccess(List<SnmpObject> oidList, String oid) throws IOException {
+    public SnmpCustomResponse sendGetBashProccess(List<SnmpObject> oidList) throws IOException {
 
         SnmpCustomResponse respuestaSnmp = new SnmpCustomResponse();
+        respuestaSnmp.setNullPDU(false);
+        respuestaSnmp.setTimeOut(false);
+        respuestaSnmp.setErrorResponse(false);
         TransportMapping transport = new DefaultUdpTransportMapping();
         transport.listen();
 
@@ -136,6 +139,7 @@ public class SnmpCommunication {
                 respuestaSnmp.setErrorStatus(errorStatus);
                 respuestaSnmp.setErrorText(errorStatusText);
                 respuestaSnmp.setErrorIndex(errorIndex);
+                respuestaSnmp.setErrorResponse(true);
 
                 if (errorStatus == PDU.noError) {
                     for (int x = 0; x < responsePDU.getVariableBindings().size(); x++) {
@@ -144,9 +148,75 @@ public class SnmpCommunication {
                     respuestaSnmp.setSnmpvariables(oidList);
                 }
             } else {
+                respuestaSnmp.setErrorResponse(true);
                 respuestaSnmp.setNullPDU(true);
             }
         } else {
+            respuestaSnmp.setErrorResponse(true);
+            respuestaSnmp.setTimeOut(true);
+        }
+        snmp.close();
+        return respuestaSnmp;
+    }
+
+    public SnmpCustomResponse sendGetBashGroupProccess(List<SnmpGroup> oidList) throws IOException {
+
+        SnmpCustomResponse respuestaSnmp = new SnmpCustomResponse();
+        respuestaSnmp.setNullPDU(false);
+        respuestaSnmp.setTimeOut(false);
+        respuestaSnmp.setErrorResponse(false);
+        TransportMapping transport = new DefaultUdpTransportMapping();
+        transport.listen();
+
+        // Create Target Address object
+        CommunityTarget comtarget = new CommunityTarget();
+        comtarget.setCommunity(new OctetString(communityRead));
+        comtarget.setVersion(versionSnmp);
+        comtarget.setAddress(new UdpAddress(ipAddress + "/" + port));
+        comtarget.setRetries(2);
+        comtarget.setTimeout(1000);
+
+        // Create the PDU object
+        PDU pdu = new PDU();
+        for (SnmpGroup grupo : oidList) {
+            for (SnmpObject objeto : grupo.getSnmpObjects()) {
+                pdu.add(new VariableBinding(new OID(objeto.getOid())));
+            }
+        }
+        pdu.setType(PDU.GET);
+        pdu.setRequestID(new Integer32(1));
+
+        // Create Snmp object for sending data to Agent
+        Snmp snmp = new Snmp(transport);
+        ResponseEvent response = snmp.get(pdu, comtarget);
+
+        // Process Agent Response
+        if (response != null) {
+            PDU responsePDU = response.getResponse();
+            if (responsePDU != null) {
+
+                int errorStatus = responsePDU.getErrorStatus();
+                int errorIndex = responsePDU.getErrorIndex();
+                String errorStatusText = responsePDU.getErrorStatusText();
+
+                respuestaSnmp.setErrorStatus(errorStatus);
+                respuestaSnmp.setErrorText(errorStatusText);
+                respuestaSnmp.setErrorIndex(errorIndex);
+                respuestaSnmp.setErrorResponse(true);
+
+                if (errorStatus == PDU.noError) {
+                    for (int x = 0; x < responsePDU.getVariableBindings().size(); x++) {
+                        
+                        //oidList.get(x).setValor(responsePDU.get(x).toValueString());
+                    }
+                  //  respuestaSnmp.setSnmpvariables(oidList);
+                }
+            } else {
+                respuestaSnmp.setErrorResponse(true);
+                respuestaSnmp.setNullPDU(true);
+            }
+        } else {
+            respuestaSnmp.setErrorResponse(true);
             respuestaSnmp.setTimeOut(true);
         }
         snmp.close();
@@ -289,11 +359,11 @@ public class SnmpCommunication {
         this.ipAddress = ipAddress;
     }
 
-    public String getPort() {
+    public int getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(int port) {
         this.port = port;
     }
 

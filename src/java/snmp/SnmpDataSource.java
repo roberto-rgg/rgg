@@ -1,33 +1,49 @@
-
 package snmp;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.entites.FuelCell;
 import modelo.entites.Nodo;
+import org.snmp4j.mp.SnmpConstants;
 
 /**
  *
  * @author Roberto
  */
 public class SnmpDataSource {
-    
+
     private FuelCell celda;
     private SnmpCommunication com;
-    
-    public FuelCell findCelda(Nodo nodo){
-        
+    private SnmpCommunication.SnmpCustomResponse respuestaSnmp;
+    private SnmpOID snmpOid;
+
+    public FuelCell findCelda(Nodo nodo) {
+        com = new SnmpCommunication("public", "publico", SnmpConstants.version2c, nodo.getIp(), nodo.getPuerto());
+        snmpOid.initSnmpObject();
+        try {
+            respuestaSnmp = com.sendGetBashProccess(snmpOid.getSnmpOperation());
+        } catch (IOException ex) {
+            Logger.getLogger(SnmpDataSource.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        celda = new FuelCell();
+        if (!respuestaSnmp.isErrorResponse()) {
+            celda.setSystemPartNumber(respuestaSnmp.getVariable().toString());
+        } else {
+            //registrar errores
+        }
         return null;
     }
-    
 
-    public void buildCelda(Nodo nodo){
+    public void buildCelda(Nodo nodo) {
         this.celda = new FuelCell();
-                
+
         celda.setInputsFuelLevel(10.2);
         celda.setInputsOutputVoltage(48.9);
         celda.setInputsOututsCurrent(5.5);
         celda.setInputsRemoteStart(23);
         celda.setInputsTempCabinet(40);
-        
+
         celda.setColdWeatherkitPresent(23);
         celda.setFloatVoltage(34.9);
         celda.setId(1);
@@ -44,8 +60,7 @@ public class SnmpDataSource {
         celda.setRuntimeSystemNeedsPowerCycle(30);
         celda.setRuntimeSystemState(5);
         celda.setRuntimeSystemWarnnig(3);
-        
-        
+
         celda.setGrossPower(23);
         celda.setLowFuel(false);
         celda.setNetKilowattHour(2300);
@@ -58,14 +73,13 @@ public class SnmpDataSource {
         celda.setSystemStateDesc("Descripcion ejemplo");
         celda.setTotalSystemCycles(20);
         celda.setTotalSystemRuntime(230.4);
-        
+
         celda.setSystemNetKilowattHours(23.8);
         celda.setSystemNumPowerDemands(30);
         celda.setSystemTimeUntilFilterMaint(10.2);
         celda.setSystemTotalSystemCycles(20);
         celda.setTotalSystemRuntime(20.3);
-        
-        
+
         celda.setGmtOffsetHours(23);
         celda.setGmtOffsetQuarter(3);
         celda.setGpsLatitude("-33333333333");
@@ -76,20 +90,20 @@ public class SnmpDataSource {
         celda.setSystemSerial("233444-serial");
         celda.setSystemTimeLocal(4);
         celda.setNodo(nodo);
-        
+
     }
 
     public SnmpDataSource(Nodo nodo) {
         this.celda = new FuelCell();
-        
+
         this.celda = new FuelCell();
-       
+
         celda.setInputsFuelLevel(10.2);
         celda.setInputsOutputVoltage(48.9);
         celda.setInputsOututsCurrent(5.5);
         celda.setInputsRemoteStart(23);
         celda.setInputsTempCabinet(40);
-        
+
         celda.setColdWeatherkitPresent(23);
         celda.setFloatVoltage(34.9);
         celda.setId(1);
@@ -106,8 +120,7 @@ public class SnmpDataSource {
         celda.setRuntimeSystemNeedsPowerCycle(30);
         celda.setRuntimeSystemState(5);
         celda.setRuntimeSystemWarnnig(3);
-        
-        
+
         celda.setGrossPower(23);
         celda.setLowFuel(false);
         celda.setNetKilowattHour(2300);
@@ -120,14 +133,13 @@ public class SnmpDataSource {
         celda.setSystemStateDesc("Descripcion ejemplo");
         celda.setTotalSystemCycles(20);
         celda.setTotalSystemRuntime(230.4);
-        
+
         celda.setSystemNetKilowattHours(23.8);
         celda.setSystemNumPowerDemands(30);
         celda.setSystemTimeUntilFilterMaint(10.2);
         celda.setSystemTotalSystemCycles(20);
         celda.setTotalSystemRuntime(20.3);
-        
-        
+
         celda.setGmtOffsetHours(23);
         celda.setGmtOffsetQuarter(3);
         celda.setGpsLatitude("-33333333333");
@@ -138,11 +150,10 @@ public class SnmpDataSource {
         celda.setSystemSerial("233444-serial");
         celda.setSystemTimeLocal(4);
         celda.setNodo(nodo);
-        
+
         //buildCelda(nodo);
     }
-   
-    
+
     public FuelCell getCelda() {
         return celda;
     }
@@ -150,8 +161,5 @@ public class SnmpDataSource {
     public void setCelda(FuelCell celda) {
         this.celda = celda;
     }
-    
-    
-    
-    
+
 }

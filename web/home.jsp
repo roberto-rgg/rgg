@@ -4,6 +4,11 @@
     Author     : Roberto
 --%>
 
+<%@page import="modelo.entites.FuelCell"%>
+<%@page import="snmp.SnmpOID"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
+<%@page import="snmp.SnmpObject"%>
 <%@page import="modelo.entites.Usuario"%>
 <%@page import="controller.LoginController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8" errorPage="error_page.jsp" %>
@@ -15,11 +20,14 @@
 <html class="no-js"> <!--<![endif]-->
 
     <%
+        
         if (request.getSession().getAttribute(LoginController.USUARIO) == null) {
             request.setAttribute(LoginController.ERROR_MENSAJE, "Sesion ha Expirado");
             RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
             rd.forward(request, response);
-        }
+            return;
+        } 
+        
     %>
 
     <!-- etiqueta head para home -->
@@ -48,60 +56,7 @@
                     </section>
 
 
-                    <table class="table table-condensed" >
-                        <thead>
-                            <tr>
-                                <th>nombre variable OID</th>
-                                <th>valor</th>
-                                <th>descripcion</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>SYSTEM_PART_NUMBER </td>
-                                <td>${celda.systemPartNumber}</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td> SYSTEM_SERIAL </td>
-                                <td>${celda.systemSerial}</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td> GPS_LATITUDE</td>
-                                <td>${celda.gpsLatitude}</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td> GPS_LONGITUDE</td>
-                                <td>${celda.gpsLongitud}</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td>GMT_OFFSET_HOURS </td>
-                                <td>${celda.gmtOffsetHours}</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td> GMT_OFFSET_QUARTER_HOURS</td>
-                                <td>${celda.gmtOffsetQuarter}</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td> SYSTEM_TIME_LOCAL </td>
-                                <td>${celda.systemTimeLocal}</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td> SYSTEM_STATE_DESC </td>
-                                <td>${celda.systemStateDesc}</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-
-                    </table>
-
-
+                 
                     <section class="page-content">
 
                         <div class="row">
@@ -237,7 +192,7 @@
                                                                         <td><ul class="list">
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
-                                                                                        <h3>Servicios</h3>
+                                                                                        <h3>gggg</h3>
                                                                                         <p>Servicio 1</p>
                                                                                         <p>Servicio 2</p>
                                                                                         <p>Servicio 3</p>
