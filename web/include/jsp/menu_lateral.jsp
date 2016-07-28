@@ -53,52 +53,41 @@
                 <li>
                     <a href="home.jsp" >
                         <span class="menu-item-ico"><i class="material-icons">dashboard</i></span>
-                        <span class="menu-item-name">Página Principal</span>
+                        <span class="menu-item-name">Resumen Estado Actual</span>
                     </a>
                 </li>
                 <li>
-                    <a href="home_alarmas.jsp">
+                    <a href="home_utilidades.jsp">
                         <span class="menu-item-ico"><i class="material-icons">extension</i></span>
-                        <span class="menu-item-name">Alarmas</span>
+                        <span class="menu-item-name">Utilidades</span>
                     </a>
 
+                </li>
+                
+                <li>
+                    <a href="home_reportes.jsp">
+                        <span class="menu-item-ico"><i class="material-icons">event</i></span>
+                        <span class="menu-item-name">Reportes</span>
+                    </a>
                 </li>
                 <li>
                     <a href="home_estadisticas.jsp">
-                        <span class="menu-item-ico"><i class="material-icons">format_align_left</i></span>
+                        <span class="menu-item-ico"><i class="material-icons">insert_chart</i></span>
                         <span class="menu-item-name">Estadisticas</span>
                     </a>
                 </li>
-                <li>
-                    <a href="home_configuracion.jsp">
-                        <span class="menu-item-ico"><i class="material-icons">view_compact</i></span>
-                        <span class="menu-item-name">Configuración</span>
-                    </a>
-
-                </li>
+            
                 <li class="nav-main-heading">
-                    <span class="sidebar-mini-hide">Añadir/Quitar</span>
+                    <span class="sidebar-mini-hide">Opciones</span>
                 </li>
                 <li>
                     <a href="">
                         <span class="menu-item-ico"><i class="material-icons">insert_drive_file</i></span>
-                        <span class="menu-item-name">Generador</span>
+                        <span class="menu-item-name">Acerca de</span>
                     </a>
 
                 </li>
-                <li>
-                    <a href="page-calendar.html" class="btn-ripple">
-                        <span class="menu-item-ico"><i class="material-icons">event</i></span>
-                        <span class="menu-item-name">Alarmas</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="page-charts.html" class="btn-ripple">
-                        <span class="menu-item-ico"><i class="material-icons">insert_chart</i></span>
-                        <span class="menu-item-name">Correos de Alarma</span>
-                    </a>
-
-                </li>
+               
 
 
 

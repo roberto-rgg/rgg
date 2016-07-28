@@ -1,11 +1,5 @@
 package modelo.entites;
 
-import modelo.entites.reports.StackFault;
-import modelo.entites.reports.StackSystemInfo;
-import modelo.entites.reports.SystemFault;
-import modelo.entites.reports.SystemWarning;
-import java.util.List;
-
 /**
  *
  * @author Roberto
@@ -14,88 +8,32 @@ public class FuelCell {
 
     private int id;
     private Nodo nodo;
-
     private String systemPartNumber;
     private String systemSerial;
+    private String sysDescrib;
     private String sysName;
     private String sysLocation;
     private String gpsLatitude;
     private String gpsLongitud;
-
+    private int stackNumber;
     //Especificaciones
     private double powerRating;
     private double nominalVoltage;
-    private double FuelConsumption;
-    private double StandByPowerConsumAverage;
-    private double StandByConsumPowerPeek;
-    //status
-    private String SystemStateDesc;
-    private boolean systemOnline;
-    private boolean systemFaulted;
-    private boolean stackFaulted;
-    private boolean lowFuel;
-    private boolean outOfFuel;
-    private int totalSystemCycles;
-    private double totalSystemRuntime;
-    private double netKilowattHour;
-    private double outputVoltage;
-    private double outputCurrrent;
-    private double grossPower;
-    private int gmtOffsetHours;
-    private int gmtOffsetQuarter;
-    private int systemTimeLocal;
-    //runtimedata
-    private int runtimeSystemState;
-    private int runtimeSystemFault;
-    private int runtimeSystemWarnnig;
-    private boolean runtimeSystemDoorOpen;
-    private int runtimeSystemNeedsPowerCycle;
-    private boolean runtimeMainBoardConnected;
-    private boolean runtimeSystemPerformingDosing;
+    private double fuelConsumption;
+    private double standByPowerConsumAverage;
+    private double standByConsumPowerPeek;
+   
 
-    //inputs
-    private double inputsOutputVoltage;
-    private double inputsOututsCurrent;
-    private double inputsTempCabinet;
-    private double inputsFuelLevel;
-    private double inputsRemoteStart;
-    //system info
-    private int systemTotalSystemCycles;
-    private double systemTimeUntilFilterMaint;
-    private double systemNetKilowattHours;
-    private int systemNumPowerDemands;
-    //parameters
-    private int limitHeaters500w;
-    private int coldWeatherkitPresent;
-    private double lowFuelLevelSetpoint;
-    private double startVoltageFirstStack;
-    private double startVoltageSecondStack;
-    private double floatVoltage;
-    private double timeBetweenFilterMaint;
-    private double maxBatteryCurrent;
-    private int maintenceHour;
-    private double daysBetweenDiags;
-    private int maintenceHour2;
-    private int externalFuelSensor;
-    private double externalSensorEmpty;
-    private double externalFuelsensorFull;
-    private double calculatedGrossPower;
-    private boolean sdcardPresent;
+    public static final String SYS_DESCR = "1.3.6.1.2.1.1.1";
+    public static final String SYS_OBJECT_ID = "1.3.36466.1.2.1.1.2";
+    public static final String SYS_UP_TIME = "1.3.36466.1.2.1.1.3";
+    public static final String SYS_CONTACT = "1.3.6.1.2.1.1.4";
+    public static final String SYS_NAME = "1.3.6.1.2.1.1.5";
+    public static final String SYS_LOCATION = "1.3.6.1.2.1.1.6";
+    public static final String SYS_SERVICES = "1.3.36466.1.2.1.1.7";
+    
 
-    private List<StackSystemInfo> stacks;
-    private List<SystemFault> systemFault;
-    private List<SystemWarning> systemWaring;
-    private List<StackFault> stackFault;
-
-    public int getNumberStacks() {
-        if (stacks != null) {
-            return stacks.size();
-        }
-        return 0;
-    }
-
-    public String oidValue(String oid) {
-
+    public String snmpOidQuery(String oid) {
         return null;
     }
 
@@ -134,6 +72,30 @@ public class FuelCell {
         this.systemSerial = systemSerial;
     }
 
+    public String getSysDescrib() {
+        return sysDescrib;
+    }
+
+    public void setSysDescrib(String sysDescrib) {
+        this.sysDescrib = sysDescrib;
+    }
+
+    public String getSysName() {
+        return sysName;
+    }
+
+    public void setSysName(String sysName) {
+        this.sysName = sysName;
+    }
+
+    public String getSysLocation() {
+        return sysLocation;
+    }
+
+    public void setSysLocation(String sysLocation) {
+        this.sysLocation = sysLocation;
+    }
+
     public String getGpsLatitude() {
         return gpsLatitude;
     }
@@ -148,358 +110,6 @@ public class FuelCell {
 
     public void setGpsLongitud(String gpsLongitud) {
         this.gpsLongitud = gpsLongitud;
-    }
-
-    public double getInputsOutputVoltage() {
-        return inputsOutputVoltage;
-    }
-
-    public void setInputsOutputVoltage(double inputsOutputVoltage) {
-        this.inputsOutputVoltage = inputsOutputVoltage;
-    }
-
-    public double getInputsOututsCurrent() {
-        return inputsOututsCurrent;
-    }
-
-    public void setInputsOututsCurrent(double inputsOututsCurrent) {
-        this.inputsOututsCurrent = inputsOututsCurrent;
-    }
-
-    public double getInputsTempCabinet() {
-        return inputsTempCabinet;
-    }
-
-    public void setInputsTempCabinet(double inputsTempCabinet) {
-        this.inputsTempCabinet = inputsTempCabinet;
-    }
-
-    public double getInputsFuelLevel() {
-        return inputsFuelLevel;
-    }
-
-    public void setInputsFuelLevel(double inputsFuelLevel) {
-        this.inputsFuelLevel = inputsFuelLevel;
-    }
-
-    public double getInputsRemoteStart() {
-        return inputsRemoteStart;
-    }
-
-    public void setInputsRemoteStart(double inputsRemoteStart) {
-        this.inputsRemoteStart = inputsRemoteStart;
-    }
-
-    public int getLimitHeaters500w() {
-        return limitHeaters500w;
-    }
-
-    public void setLimitHeaters500w(int limitHeaters500w) {
-        this.limitHeaters500w = limitHeaters500w;
-    }
-
-    public int getColdWeatherkitPresent() {
-        return coldWeatherkitPresent;
-    }
-
-    public void setColdWeatherkitPresent(int coldWeatherkitPresent) {
-        this.coldWeatherkitPresent = coldWeatherkitPresent;
-    }
-
-    public double getLowFuelLevelSetpoint() {
-        return lowFuelLevelSetpoint;
-    }
-
-    public void setLowFuelLevelSetpoint(double lowFuelLevelSetpoint) {
-        this.lowFuelLevelSetpoint = lowFuelLevelSetpoint;
-    }
-
-    public double getStartVoltageFirstStack() {
-        return startVoltageFirstStack;
-    }
-
-    public void setStartVoltageFirstStack(double startVoltageFirstStack) {
-        this.startVoltageFirstStack = startVoltageFirstStack;
-    }
-
-    public double getStartVoltageSecondStack() {
-        return startVoltageSecondStack;
-    }
-
-    public void setStartVoltageSecondStack(double startVoltageSecondStack) {
-        this.startVoltageSecondStack = startVoltageSecondStack;
-    }
-
-    public double getTimeBetweenFilterMaint() {
-        return timeBetweenFilterMaint;
-    }
-
-    public void setTimeBetweenFilterMaint(double timeBetweenFilterMaint) {
-        this.timeBetweenFilterMaint = timeBetweenFilterMaint;
-    }
-
-    public double getMaxBatteryCurrent() {
-        return maxBatteryCurrent;
-    }
-
-    public void setMaxBatteryCurrent(double maxBatteryCurrent) {
-        this.maxBatteryCurrent = maxBatteryCurrent;
-    }
-
-    public int getMaintenceHour() {
-        return maintenceHour;
-    }
-
-    public void setMaintenceHour(int maintenceHour) {
-        this.maintenceHour = maintenceHour;
-    }
-
-    public int getRuntimeSystemState() {
-        return runtimeSystemState;
-    }
-
-    public void setRuntimeSystemState(int runtimeSystemState) {
-        this.runtimeSystemState = runtimeSystemState;
-    }
-
-    public int getRuntimeSystemFault() {
-        return runtimeSystemFault;
-    }
-
-    public void setRuntimeSystemFault(int runtimeSystemFault) {
-        this.runtimeSystemFault = runtimeSystemFault;
-    }
-
-    public int getRuntimeSystemWarnnig() {
-        return runtimeSystemWarnnig;
-    }
-
-    public void setRuntimeSystemWarnnig(int runtimeSystemWarnnig) {
-        this.runtimeSystemWarnnig = runtimeSystemWarnnig;
-    }
-
-    public boolean isRuntimeSystemDoorOpen() {
-        return runtimeSystemDoorOpen;
-    }
-
-    public void setRuntimeSystemDoorOpen(boolean runtimeSystemDoorOpen) {
-        this.runtimeSystemDoorOpen = runtimeSystemDoorOpen;
-    }
-
-    public int getRuntimeSystemNeedsPowerCycle() {
-        return runtimeSystemNeedsPowerCycle;
-    }
-
-    public void setRuntimeSystemNeedsPowerCycle(int runtimeSystemNeedsPowerCycle) {
-        this.runtimeSystemNeedsPowerCycle = runtimeSystemNeedsPowerCycle;
-    }
-
-    public boolean isRuntimeMainBoardConnected() {
-        return runtimeMainBoardConnected;
-    }
-
-    public void setRuntimeMainBoardConnected(boolean runtimeMainBoardConnected) {
-        this.runtimeMainBoardConnected = runtimeMainBoardConnected;
-    }
-
-    public String getSystemStateDesc() {
-        return SystemStateDesc;
-    }
-
-    public void setSystemStateDesc(String SystemStateDesc) {
-        this.SystemStateDesc = SystemStateDesc;
-    }
-
-    public boolean isSystemOnline() {
-        return systemOnline;
-    }
-
-    public void setSystemOnline(boolean systemOnline) {
-        this.systemOnline = systemOnline;
-    }
-
-    public boolean isSystemFaulted() {
-        return systemFaulted;
-    }
-
-    public void setSystemFaulted(boolean systemFaulted) {
-        this.systemFaulted = systemFaulted;
-    }
-
-    public boolean isStackFaulted() {
-        return stackFaulted;
-    }
-
-    public void setStackFaulted(boolean stackFaulted) {
-        this.stackFaulted = stackFaulted;
-    }
-
-    public boolean isLowFuel() {
-        return lowFuel;
-    }
-
-    public void setLowFuel(boolean lowFuel) {
-        this.lowFuel = lowFuel;
-    }
-
-    public boolean isOutOfFuel() {
-        return outOfFuel;
-    }
-
-    public void setOutOfFuel(boolean outOfFuel) {
-        this.outOfFuel = outOfFuel;
-    }
-
-    public int getTotalSystemCycles() {
-        return totalSystemCycles;
-    }
-
-    public void setTotalSystemCycles(int totalSystemCycles) {
-        this.totalSystemCycles = totalSystemCycles;
-    }
-
-    public double getTotalSystemRuntime() {
-        return totalSystemRuntime;
-    }
-
-    public void setTotalSystemRuntime(double totalSystemRuntime) {
-        this.totalSystemRuntime = totalSystemRuntime;
-    }
-
-    public double getNetKilowattHour() {
-        return netKilowattHour;
-    }
-
-    public void setNetKilowattHour(double netKilowattHour) {
-        this.netKilowattHour = netKilowattHour;
-    }
-
-    public double getOutputVoltage() {
-        return outputVoltage;
-    }
-
-    public void setOutputVoltage(double outputVoltage) {
-        this.outputVoltage = outputVoltage;
-    }
-
-    public double getOutputCurrrent() {
-        return outputCurrrent;
-    }
-
-    public void setOutputCurrrent(double outputCurrrent) {
-        this.outputCurrrent = outputCurrrent;
-    }
-
-    public double getGrossPower() {
-        return grossPower;
-    }
-
-    public void setGrossPower(double grossPower) {
-        this.grossPower = grossPower;
-    }
-
-    public int getGmtOffsetHours() {
-        return gmtOffsetHours;
-    }
-
-    public void setGmtOffsetHours(int gmtOffsetHours) {
-        this.gmtOffsetHours = gmtOffsetHours;
-    }
-
-    public int getGmtOffsetQuarter() {
-        return gmtOffsetQuarter;
-    }
-
-    public void setGmtOffsetQuarter(int gmtOffsetQuarter) {
-        this.gmtOffsetQuarter = gmtOffsetQuarter;
-    }
-
-    public int getSystemTimeLocal() {
-        return systemTimeLocal;
-    }
-
-    public void setSystemTimeLocal(int systemTimeLocal) {
-        this.systemTimeLocal = systemTimeLocal;
-    }
-
-    public List<StackSystemInfo> getStacks() {
-        return stacks;
-    }
-
-    public void setStacks(List<StackSystemInfo> stacks) {
-        this.stacks = stacks;
-    }
-
-    public List<SystemFault> getSystemFault() {
-        return systemFault;
-    }
-
-    public void setSystemFault(List<SystemFault> systemFault) {
-        this.systemFault = systemFault;
-    }
-
-    public List<SystemWarning> getSystemWaring() {
-        return systemWaring;
-    }
-
-    public void setSystemWaring(List<SystemWarning> systemWaring) {
-        this.systemWaring = systemWaring;
-    }
-
-    public List<StackFault> getStackFault() {
-        return stackFault;
-    }
-
-    public void setStackFault(List<StackFault> stackFault) {
-        this.stackFault = stackFault;
-    }
-
-    public boolean isRuntimeSystemPerformingDosing() {
-        return runtimeSystemPerformingDosing;
-    }
-
-    public void setRuntimeSystemPerformingDosing(boolean runtimeSystemPerformingDosing) {
-        this.runtimeSystemPerformingDosing = runtimeSystemPerformingDosing;
-    }
-
-    public double getFloatVoltage() {
-        return floatVoltage;
-    }
-
-    public void setFloatVoltage(double floatVoltage) {
-        this.floatVoltage = floatVoltage;
-    }
-
-    public int getSystemTotalSystemCycles() {
-        return systemTotalSystemCycles;
-    }
-
-    public void setSystemTotalSystemCycles(int systemTotalSystemCycles) {
-        this.systemTotalSystemCycles = systemTotalSystemCycles;
-    }
-
-    public double getSystemTimeUntilFilterMaint() {
-        return systemTimeUntilFilterMaint;
-    }
-
-    public void setSystemTimeUntilFilterMaint(double systemTimeUntilFilterMaint) {
-        this.systemTimeUntilFilterMaint = systemTimeUntilFilterMaint;
-    }
-
-    public double getSystemNetKilowattHours() {
-        return systemNetKilowattHours;
-    }
-
-    public void setSystemNetKilowattHours(double systemNetKilowattHours) {
-        this.systemNetKilowattHours = systemNetKilowattHours;
-    }
-
-    public int getSystemNumPowerDemands() {
-        return systemNumPowerDemands;
-    }
-
-    public void setSystemNumPowerDemands(int systemNumPowerDemands) {
-        this.systemNumPowerDemands = systemNumPowerDemands;
     }
 
     public double getPowerRating() {
@@ -519,100 +129,37 @@ public class FuelCell {
     }
 
     public double getFuelConsumption() {
-        return FuelConsumption;
+        return fuelConsumption;
     }
 
-    public void setFuelConsumption(double FuelConsumption) {
-        this.FuelConsumption = FuelConsumption;
+    public void setFuelConsumption(double fuelConsumption) {
+        this.fuelConsumption = fuelConsumption;
     }
 
     public double getStandByPowerConsumAverage() {
-        return StandByPowerConsumAverage;
+        return standByPowerConsumAverage;
     }
 
-    public void setStandByPowerConsumAverage(double StandByPowerConsumAverage) {
-        this.StandByPowerConsumAverage = StandByPowerConsumAverage;
+    public void setStandByPowerConsumAverage(double standByPowerConsumAverage) {
+        this.standByPowerConsumAverage = standByPowerConsumAverage;
     }
 
     public double getStandByConsumPowerPeek() {
-        return StandByConsumPowerPeek;
+        return standByConsumPowerPeek;
     }
 
-    public void setStandByConsumPowerPeek(double StandByConsumPowerPeek) {
-        this.StandByConsumPowerPeek = StandByConsumPowerPeek;
+    public void setStandByConsumPowerPeek(double standByConsumPowerPeek) {
+        this.standByConsumPowerPeek = standByConsumPowerPeek;
     }
 
-    public String getSysName() {
-        return sysName;
+    public int getStackNumber() {
+        return stackNumber;
     }
 
-    public void setSysName(String sysName) {
-        this.sysName = sysName;
+    public void setStackNumber(int stackNumber) {
+        this.stackNumber = stackNumber;
     }
 
-    public String getSysLocation() {
-        return sysLocation;
-    }
-
-    public void setSysLocation(String sysLocation) {
-        this.sysLocation = sysLocation;
-    }
-
-    public double getDaysBetweenDiags() {
-        return daysBetweenDiags;
-    }
-
-    public void setDaysBetweenDiags(double daysBetweenDiags) {
-        this.daysBetweenDiags = daysBetweenDiags;
-    }
-
-    public int getMaintenceHour2() {
-        return maintenceHour2;
-    }
-
-    public void setMaintenceHour2(int maintenceHour2) {
-        this.maintenceHour2 = maintenceHour2;
-    }
-
-    public int getExternalFuelSensor() {
-        return externalFuelSensor;
-    }
-
-    public void setExternalFuelSensor(int externalFuelSensor) {
-        this.externalFuelSensor = externalFuelSensor;
-    }
-
-    public double getExternalSensorEmpty() {
-        return externalSensorEmpty;
-    }
-
-    public void setExternalSensorEmpty(double externalSensorEmpty) {
-        this.externalSensorEmpty = externalSensorEmpty;
-    }
-
-    public double getExternalFuelsensorFull() {
-        return externalFuelsensorFull;
-    }
-
-    public void setExternalFuelsensorFull(double externalFuelsensorFull) {
-        this.externalFuelsensorFull = externalFuelsensorFull;
-    }
-
-    public double getCalculatedGrossPower() {
-        return calculatedGrossPower;
-    }
-
-    public void setCalculatedGrossPower(double calculatedGrossPower) {
-        this.calculatedGrossPower = calculatedGrossPower;
-    }
-
-    public boolean isSdcardPresent() {
-        return sdcardPresent;
-    }
-
-    public void setSdcardPresent(boolean sdcardPresent) {
-        this.sdcardPresent = sdcardPresent;
-    }
     /**
      * Clase estatica que almacena variables oid de tipo lectura
      */

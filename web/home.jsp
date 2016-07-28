@@ -4,6 +4,9 @@
     Author     : Roberto
 --%>
 
+<%@page import="controller.helper.ConverterHelper"%>
+<%@page import="snmp.SnmpDataSource"%>
+<%@page import="snmp.SnmpCommunication"%>
 <%@page import="modelo.entites.FuelCell"%>
 <%@page import="snmp.SnmpOID"%>
 <%@page import="java.util.ArrayList"%>
@@ -18,16 +21,44 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> 
 <html class="no-js"> <!--<![endif]-->
+    <%!
+        private FuelCell celda;
+        private String descripcion;
+        private String tiempoOnline;
+        private String modelo;
+        private String ubicacion;
+        private String totalCiclos;
+        private String totalCiclosStack1;
+        private String totalCiclosStack2;
+        private String estadoActual;
+        private String warning384;
+        private String warning385;
+        private String warning386;
+        private String warning387;
+        private boolean systemfaulted;
+        private boolean sdCardPresent;
+        private SnmpCommunication snmpCom;
+
+    %>
 
     <%
-        
+
         if (request.getSession().getAttribute(LoginController.USUARIO) == null) {
             request.setAttribute(LoginController.ERROR_MENSAJE, "Sesion ha Expirado");
             RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
             rd.forward(request, response);
             return;
-        } 
+        }
         
+        snmpCom = new SnmpCommunication(null, null, 2, null, 1);
+        SnmpDataSource source = new SnmpDataSource();
+        celda = source.getCelda();
+        descripcion = source.retrieveSnmpValueTEST(FuelCell.SYS_DESCR);
+        tiempoOnline = source.retrieveSnmpValueTEST(FuelCell.SYS_LOCATION);
+       
+        double combustible = ConverterHelper.doubleValue("110");
+        combustible = ((combustible/225)*100);
+
     %>
 
     <!-- etiqueta head para home -->
@@ -56,7 +87,7 @@
                     </section>
 
 
-                 
+
                     <section class="page-content">
 
                         <div class="row">
@@ -65,12 +96,12 @@
                                     <div class="panel-body no-padding">
                                         <div class="mini-card mini-card-primary">
                                             <div class="mini-card-left">
-                                                <span>Alarmas Activas ultimos 5 dias</span>
-                                                <h2>1</h2>
+                                                <span>Fallas últimos 7 días</span>
+                                                <h2>#FALLAS</h2>
                                             </div>
                                             <div class="mini-card-right">
                                                 <div class="bemat-mini-chart bemat-mini-chart-primary">
-                                                    <span class="peity-line">0,0,1,0,0</span>
+                                                    <span class="peity-line">1,2,0,0,1,0,0</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -83,33 +114,33 @@
                                     <div class="panel-body no-padding">
                                         <div class="mini-card mini-card-success">
                                             <div class="mini-card-left">
-                                                <span>Actividad ultimos 5 dias</span>
-                                                <h2>3</h2>
+                                                <span>Advertencias últimos 7 dias</span>
+                                                <h2>#ADVERTENCIAS</h2>
                                             </div>
                                             <div class="mini-card-right">
                                                 <div class="bemat-mini-chart bemat-mini-chart-success">
-                                                    <span class="peity-bar">0,6,0,6,6</span>
+                                                    <span class="peity-bar">1,5,0,6,0,6,6</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-body no-padding">
                                         <div class="mini-card mini-card-info">
                                             <div class="mini-card-left">
-                                                <span>Login ultimos 5 dias</span>
-                                                <h2>10</h2>
+                                                <span>Arranques últimos 7 días</span>
+                                                <h2>#ARRANQUES</h2>
                                             </div>
                                             <div class="mini-card-right">
                                                 <div class="bemat-mini-chart bemat-mini-chart-info">
-                                                    <span class="peity-line">2,0,1,4,1,0</span>
+                                                    <span class="peity-line">1,4,1,0</span>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -119,34 +150,37 @@
                                     <div class="panel-body no-padding">
                                         <div class="mini-card mini-card-danger">
                                             <div class="mini-card-left">
-                                                <span>Baterias detectadas</span>
-                                                <h2>1</h2>
+                                                <span>Potencia generada últimos 5 días</span>
+                                                <h2>#POTENCIA</h2>
                                             </div>
                                             <div class="mini-card-right">
                                                 <div class="bemat-mini-chart bemat-mini-chart-danger">
-                                                    <span class="peity-bar">0,0,1,0</span>
+                                                    <span class="peity-bar">0,0,1,0,3</span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
 
+                        </div>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <header>
-                                            Caracteristicas											<span class="label label-primary pull-right">Online</span>
+                                            Caracteristicas											
+                                            <span class="label label-success pull-right " style="margin: 10px;padding: 10px;">En Falla</span>
+                                            <span class="label label-success pull-right " style="margin: 10px;padding: 10px;">Tarjeta SD presente</span>
+                                            <span class="label label-danger pull-right " style="margin: 10px;padding: 10px;">Online</span>
                                         </header>
 
                                         <div class="panel-heading-tools">
                                             <div class="btn-group">
                                                 <a class="btn btn-icon-toggle panel-tools-menu dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
                                                 <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="#">Comprobar</a></li>
+                                                    <li><a href="#">Actualizar Información</a></li>
                                                 </ul>
                                             </div>
                                         </div> 
@@ -167,19 +201,19 @@
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Descripción</h3>
-                                                                                        <p>ElectraGen V1.0</p>
+                                                                                        <p><%= descripcion %></p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Tiempo Online</h3>
-                                                                                        <p>00:00:00:00</p>
+                                                                                        <p>#VARIABLE_70</p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Modelo</h3>
-                                                                                        <p>ME-4.5kW-48V-03-J</p>
+                                                                                        <p>#DATA_BASE</p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
@@ -189,28 +223,30 @@
                                                                                     </div>
                                                                                 </li>
                                                                             </ul></td>
-                                                                        <td><ul class="list">
+                                                                        <td>
+                                                                            <ul class="list">
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
-                                                                                        <h3>gggg</h3>
-                                                                                        <p>Servicio 1</p>
-                                                                                        <p>Servicio 2</p>
-                                                                                        <p>Servicio 3</p>
-                                                                                        <p>Servicio 4</p>
+                                                                                        <h3>Ciclos Celda</h3>
+                                                                                        <p>Total:</p>
+                                                                                        <h3>Ciclos Stack</h3>
+                                                                                        <p>Stack 1</p>
+                                                                                        <p>Stack 2</p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
-                                                                                        <h3>Numbero IF</h3>
-                                                                                        <p>00:00:00:00:00</p>
+                                                                                        <h3>Estado Actual</h3>
+                                                                                        <p>#VARIABLE_5</p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
-                                                                                        <h3>Dirección RED</h3>
-                                                                                        <p>IP 127.0.0.1</p>
-                                                                                        <p>Mask 255.2555.255.0</p>
-                                                                                        <p>Gateway 127.0.0.1</p>
+                                                                                        <h3>Últimas 4 Advertencias</h3>
+                                                                                        <p>#warning_1</p>
+                                                                                        <p>#warning_2</p>
+                                                                                        <p>#warning_3</p>
+                                                                                        <p>#warning_4</p>
                                                                                     </div>
 
                                                                             </ul></td>
@@ -227,19 +263,19 @@
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="stat-wrapper">
-                                                                <h4 class="no-margin-top margin-bottom-2">Voltage Output: <span class="pull-right">220,547</span></h4>
+                                                                <h4 class="no-margin-top margin-bottom-2">Voltage Salida: <span class="pull-right">220,547</span></h4>
                                                                 <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="determinate" data-type="primary" data-value="30"></div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <div class="stat-wrapper margin-vertical-4">
-                                                                <h4 class="no-margin-top margin-bottom-2">Amperage Output: <span class="pull-right">20,421</span></h4>
+                                                                <h4 class="no-margin-top margin-bottom-2">Corriente Salida: <span class="pull-right">20,421</span></h4>
                                                                 <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="indeterminate" data-type="primary" data-value="57"></div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <div class="stat-wrapper">
-                                                                <h4 class="no-margin-top margin-bottom-2">Power: <span class="pull-right">278 Watts</span></h4>
+                                                                <h4 class="no-margin-top margin-bottom-2">Potencia: <span class="pull-right">278 Watts</span></h4>
                                                                 <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="determinate" data-type="primary" data-value="75"></div>
                                                             </div>
                                                         </div>
@@ -252,31 +288,25 @@
                                                 <div class="col-lg-3 col-sm-6">
                                                     <div class="micro-stats layout layout-row layout-align-center margin-top-3">
                                                         <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="52" data-type="danger" data-size="45" data-line-width="3"></div>
-                                                        <div class="micro-stats_title flex padding-horizontal-2">Power</div>
+                                                        <div class="micro-stats_title flex padding-horizontal-2">Temperatura Reformador</div>
                                                         <div class="micro-stats_icons"><span class="label label-danger"><i class="material-icons">trending_up</i></span></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3 col-sm-6">
                                                     <div class="micro-stats layout layout-row layout-align-center margin-top-3">
                                                         <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="87" data-type="warning" data-size="45" data-line-width="3"></div>
-                                                        <div class="micro-stats_title flex padding-horizontal-2">Temperatura </div>
+                                                        <div class="micro-stats_title flex padding-horizontal-2">Temperatura Membrana</div>
                                                         <div class="micro-stats_icons"><span class="label label-warning"><i class="material-icons">report_problem</i></span></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3 col-sm-6">
                                                     <div class="micro-stats layout layout-row layout-align-center margin-top-3">
                                                         <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="25" data-type="success" data-size="45" data-line-width="3"></div>
-                                                        <div class="micro-stats_title flex padding-horizontal-2">Filtro</div>
+                                                        <div class="micro-stats_title flex padding-horizontal-2">Días último funcionamiento</div>
                                                         <div class="micro-stats_icons"><span class="label label-success"><i class="material-icons">trending_down</i></span></div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-3 col-sm-6">
-                                                    <div class="micro-stats layout layout-row layout-align-center margin-top-3">
-                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="57" data-type="primary" data-size="45" data-line-width="3"></div>
-                                                        <div class="micro-stats_title flex padding-horizontal-2">Mantenimiento</div>
-                                                        <div class="micro-stats_icons"><span class="label label-primary"><i class="material-icons">trending_up</i></span></div>
-                                                    </div>
-                                                </div>												
+
                                             </div>
                                         </div>
                                     </div>
@@ -284,25 +314,15 @@
                             </div>
                         </div>
 
-
                         <div class="row">
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <header>Combustible</header>
-
-                                        <div class="panel-heading-tools">
-                                            <div class="btn-group">
-                                                <a class="btn btn-icon-toggle panel-tools-menu dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="#">Refresh</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
-                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="89" data-type="primary"></div>
+                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="<%= combustible %>" data-type="primary"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -310,16 +330,7 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <header>Bateria</header>
-
-                                        <div class="panel-heading-tools">
-                                            <div class="btn-group">
-                                                <a class="btn btn-icon-toggle panel-tools-menu dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="#">Refresh</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <header>Consumo</header>
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
@@ -331,16 +342,7 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <header>Tanque Externo</header>
-
-                                        <div class="panel-heading-tools">
-                                            <div class="btn-group">
-                                                <a class="btn btn-icon-toggle panel-tools-menu dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="#">Refresh</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
+                                        <header>Potencia Generada</header>
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
@@ -352,16 +354,8 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <header>Voltaje Actual</header>
+                                        <header>Días faltante para la mantención</header>
 
-                                        <div class="panel-heading-tools">
-                                            <div class="btn-group">
-                                                <a class="btn btn-icon-toggle panel-tools-menu dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="material-icons">more_vert</i></a>
-                                                <ul class="dropdown-menu dropdown-menu-right">
-                                                    <li><a href="#">Refresh</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
@@ -371,11 +365,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
 
                     </section><!-- /#page-content -->
 

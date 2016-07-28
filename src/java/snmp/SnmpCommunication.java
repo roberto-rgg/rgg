@@ -6,7 +6,6 @@
 package snmp;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import org.snmp4j.CommunityTarget;
 import org.snmp4j.PDU;
@@ -157,94 +156,6 @@ public class SnmpCommunication {
         }
         snmp.close();
         return respuestaSnmp;
-    }
-
-    public SnmpCustomResponse sendGetBashGroupProccess(List<SnmpGroup> oidList) throws IOException {
-
-        SnmpCustomResponse respuestaSnmp = new SnmpCustomResponse();
-        respuestaSnmp.setNullPDU(false);
-        respuestaSnmp.setTimeOut(false);
-        respuestaSnmp.setErrorResponse(false);
-        TransportMapping transport = new DefaultUdpTransportMapping();
-        transport.listen();
-
-        // Create Target Address object
-        CommunityTarget comtarget = new CommunityTarget();
-        comtarget.setCommunity(new OctetString(communityRead));
-        comtarget.setVersion(versionSnmp);
-        comtarget.setAddress(new UdpAddress(ipAddress + "/" + port));
-        comtarget.setRetries(2);
-        comtarget.setTimeout(1000);
-
-        // Create the PDU object
-        PDU pdu = new PDU();
-        for (SnmpGroup grupo : oidList) {
-            for (SnmpObject objeto : grupo.getSnmpObjects()) {
-                pdu.add(new VariableBinding(new OID(objeto.getOid())));
-            }
-        }
-        pdu.setType(PDU.GET);
-        pdu.setRequestID(new Integer32(1));
-
-        // Create Snmp object for sending data to Agent
-        Snmp snmp = new Snmp(transport);
-        ResponseEvent response = snmp.get(pdu, comtarget);
-
-        // Process Agent Response
-        if (response != null) {
-            PDU responsePDU = response.getResponse();
-            if (responsePDU != null) {
-
-                int errorStatus = responsePDU.getErrorStatus();
-                int errorIndex = responsePDU.getErrorIndex();
-                String errorStatusText = responsePDU.getErrorStatusText();
-
-                respuestaSnmp.setErrorStatus(errorStatus);
-                respuestaSnmp.setErrorText(errorStatusText);
-                respuestaSnmp.setErrorIndex(errorIndex);
-                respuestaSnmp.setErrorResponse(true);
-
-                if (errorStatus == PDU.noError) {
-                    for (int x = 0; x < responsePDU.getVariableBindings().size(); x++) {
-                        
-                        //oidList.get(x).setValor(responsePDU.get(x).toValueString());
-                    }
-                  //  respuestaSnmp.setSnmpvariables(oidList);
-                }
-            } else {
-                respuestaSnmp.setErrorResponse(true);
-                respuestaSnmp.setNullPDU(true);
-            }
-        } else {
-            respuestaSnmp.setErrorResponse(true);
-            respuestaSnmp.setTimeOut(true);
-        }
-        snmp.close();
-        return respuestaSnmp;
-    }
-
-    private int sendGetInt(String oid) {
-        return -1;
-    }
-
-    private double sendGetDouble(String oid) {
-        return -1.1;
-    }
-
-    private Date sendGetDate(String oid) {
-        return null;
-    }
-
-    private boolean sendSetSnmp(String value) {
-        return false;
-    }
-
-    private boolean sendSetSnmp(int value) {
-        return false;
-    }
-
-    private boolean sendSetSnmp(double value) {
-        return false;
     }
 
     /**
