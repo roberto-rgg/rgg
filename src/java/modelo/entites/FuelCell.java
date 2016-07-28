@@ -1,5 +1,9 @@
 package modelo.entites;
 
+import modelo.entites.reports.StackFault;
+import modelo.entites.reports.StackSystemInfo;
+import modelo.entites.reports.SystemFault;
+import modelo.entites.reports.SystemWarning;
 import java.util.List;
 
 /**
