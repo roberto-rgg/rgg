@@ -81,7 +81,7 @@
                     <span class="sidebar-mini-hide">Opciones</span>
                 </li>
                 <li>
-                    <a href="">
+                    <a href="/BallardWeb/ControllerTest">
                         <span class="menu-item-ico"><i class="material-icons">insert_drive_file</i></span>
                         <span class="menu-item-name">Acerca de</span>
                     </a>

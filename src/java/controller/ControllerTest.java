@@ -1,38 +1,25 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.dao.FuelCellImplDAO;
-import modelo.dao.NodoImplDAO;
-import modelo.dao.interfaces.FuelCellDAO;
-import modelo.dao.interfaces.NodoDAO;
-import modelo.entites.FuelCell;
-import modelo.entites.Nodo;
-import snmp.SnmpDataSource;
 
 /**
  *
  * @author Roberto
  */
-@WebServlet(name = "CeldaController", urlPatterns = {"/CeldaController"})
-public class CeldaController extends HttpServlet {
-
-    private String pathDispatcher;
-    private int idNodo;
-    private int home;
-    private FuelCell celda;
-    public static final String PARAM_NODO = "id_nodo";
-    public static final String PARAM_CELDA = "celda";
-    public static final String PARAM_HOME = "id_home";
-    public static final int MAIN = 1;
-    public static final int ESTADISTICAS = 2;
-    public static final int PARAMETROS = 3;
-    public static final int ALARMAS = 4;
+@WebServlet(name = "ControllerTest", urlPatterns = {"/ControllerTest"})
+public class ControllerTest extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -47,28 +34,26 @@ public class CeldaController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        if (request.getSession().getAttribute(LoginController.USUARIO) == null) {
-            request.setAttribute(LoginController.ERROR_MENSAJE, "Sesion ha Expirado");
-            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-            rd.forward(request, response);
-        }
-
-        if (request.getParameter(PARAM_NODO) != null && request.getParameter(PARAM_HOME) != null) {
-            idNodo = Integer.parseInt(request.getParameter(PARAM_NODO));
+        String nombre = "ff"; //request.getParameter("nombre");
+            String apellido = "eer";//request.getParameter("apellido");
+        
+            request.setAttribute("nombre", nombre);
+            request.setAttribute("apellido", apellido);
+            RequestDispatcher rd = request.getRequestDispatcher("test_link.jsp");
             
-            request.getSession().setAttribute(PARAM_NODO, idNodo);
-            NodoDAO daoNodo = new NodoImplDAO();
-            Nodo nodo = daoNodo.read(idNodo);
-            FuelCellDAO daoFuelCell = new FuelCellImplDAO();
-            celda = daoFuelCell.read(nodo.getId());
-            request.getSession().setAttribute(PARAM_CELDA, celda);
-            pathDispatcher = "home.jsp";
-
-        }
-
-        RequestDispatcher rd = request.getRequestDispatcher(pathDispatcher);
         rd.forward(request, response);
-
+        /**
+        try (PrintWriter out = response.getWriter()) {
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ControllerTest</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ControllerTest at " + nombre + " " + apellido + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }**/
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

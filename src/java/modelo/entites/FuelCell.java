@@ -13,16 +13,26 @@ public class FuelCell {
     private String sysDescrib;
     private String sysName;
     private String sysLocation;
-    private String gpsLatitude;
-    private String gpsLongitud;
+    private int gpsLatitude;
+    private int gpsLongitud;
     private int stackNumber;
+    private Long systemtimeGmt;
+    private int gmtOffsethours;
+    private int gmtOffsetQuarterHours;
+    private Long systemTimelocal;
+
     //Especificaciones
+    private String modelo;
+    private String descripcionModelo;
     private double powerRating;
     private double nominalVoltage;
     private double fuelConsumption;
     private double standByPowerConsumAverage;
     private double standByConsumPowerPeek;
-   
+    public static final int TAN_SIZE = 225;
+    public static final int MAX_AMP = 125;
+    public static final int MAX_TEMP_REFORMER = 460;
+    public static final int MAX_TEMP_MEMBRANA = 400;
 
     public static final String SYS_DESCR = "1.3.6.1.2.1.1.1";
     public static final String SYS_OBJECT_ID = "1.3.36466.1.2.1.1.2";
@@ -31,7 +41,11 @@ public class FuelCell {
     public static final String SYS_NAME = "1.3.6.1.2.1.1.5";
     public static final String SYS_LOCATION = "1.3.6.1.2.1.1.6";
     public static final String SYS_SERVICES = "1.3.36466.1.2.1.1.7";
-    
+    public static final String SYSTEM_PART_NUMBER = "1.3.36466.1.1.1.1.1.1";
+    public static final String SYSTEM_SERIAL = "1.3.36466.1.1.1.1.1.2";
+    public static final String SYSTEM_PRODUCT_ID = "1.3.36466.1.1.1.1.1.3";
+    public static final String GPS_LATITUDE = "1.3.36466.1.1.1.1.1.4";
+    public static final String GPS_LONGITUDE = "1.3.36466.1.1.1.1.1.5";
 
     public String snmpOidQuery(String oid) {
         return null;
@@ -54,6 +68,22 @@ public class FuelCell {
 
     public void setNodo(Nodo nodo) {
         this.nodo = nodo;
+    }
+
+    public String getModelo() {
+        return modelo;
+    }
+
+    public void setModelo(String modelo) {
+        this.modelo = modelo;
+    }
+
+    public String getDescripcionModelo() {
+        return descripcionModelo;
+    }
+
+    public void setDescripcionModelo(String descripcionModelo) {
+        this.descripcionModelo = descripcionModelo;
     }
 
     public String getSystemPartNumber() {
@@ -96,19 +126,19 @@ public class FuelCell {
         this.sysLocation = sysLocation;
     }
 
-    public String getGpsLatitude() {
+    public int getGpsLatitude() {
         return gpsLatitude;
     }
 
-    public void setGpsLatitude(String gpsLatitude) {
+    public void setGpsLatitude(int gpsLatitude) {
         this.gpsLatitude = gpsLatitude;
     }
 
-    public String getGpsLongitud() {
+    public int getGpsLongitud() {
         return gpsLongitud;
     }
 
-    public void setGpsLongitud(String gpsLongitud) {
+    public void setGpsLongitud(int gpsLongitud) {
         this.gpsLongitud = gpsLongitud;
     }
 
@@ -158,6 +188,38 @@ public class FuelCell {
 
     public void setStackNumber(int stackNumber) {
         this.stackNumber = stackNumber;
+    }
+
+    public Long getSystemtimeGmt() {
+        return systemtimeGmt;
+    }
+
+    public void setSystemtimeGmt(Long systemtimeGmt) {
+        this.systemtimeGmt = systemtimeGmt;
+    }
+
+    public int getGmtOffsethours() {
+        return gmtOffsethours;
+    }
+
+    public void setGmtOffsethours(int gmtOffsethours) {
+        this.gmtOffsethours = gmtOffsethours;
+    }
+
+    public int getGmtOffsetQuarterHours() {
+        return gmtOffsetQuarterHours;
+    }
+
+    public void setGmtOffsetQuarterHours(int gmtOffsetQuarterHours) {
+        this.gmtOffsetQuarterHours = gmtOffsetQuarterHours;
+    }
+
+    public Long getSystemTimelocal() {
+        return systemTimelocal;
+    }
+
+    public void setSystemTimelocal(Long systemTimelocal) {
+        this.systemTimelocal = systemTimelocal;
     }
 
     /**

@@ -4,6 +4,7 @@
     Author     : Roberto
 --%>
 
+<%@page import="controller.CeldaController"%>
 <%@page import="controller.helper.ConverterHelper"%>
 <%@page import="snmp.SnmpDataSource"%>
 <%@page import="snmp.SnmpCommunication"%>
@@ -23,7 +24,6 @@
 <html class="no-js"> <!--<![endif]-->
     <%!
         private FuelCell celda;
-        private String descripcion;
         private String tiempoOnline;
         private String modelo;
         private String ubicacion;
@@ -37,6 +37,20 @@
         private String warning387;
         private boolean systemfaulted;
         private boolean sdCardPresent;
+
+        private double voltageOutputPercent;
+        private double amperageOutputPercent;
+        private double potenciaOutputPercent;
+
+        private double tempReformadorPercent;
+        private double tempMembranaPercent;
+        private double diasUltimoFuncionamiento;
+
+        private double combustiblePercent;
+        private double consumoPercent;
+        private double potenciaGeneradaPercent;
+        private double diasParaMantencion;
+
         private SnmpCommunication snmpCom;
 
     %>
@@ -49,15 +63,46 @@
             rd.forward(request, response);
             return;
         }
-        
+
         snmpCom = new SnmpCommunication(null, null, 2, null, 1);
         SnmpDataSource source = new SnmpDataSource();
-        celda = source.getCelda();
-        descripcion = source.retrieveSnmpValueTEST(FuelCell.SYS_DESCR);
-        tiempoOnline = source.retrieveSnmpValueTEST(FuelCell.SYS_LOCATION);
-       
-        double combustible = ConverterHelper.doubleValue("110");
-        combustible = ((combustible/225)*100);
+
+        tiempoOnline = source.retrieveSnmpValueTEST(SnmpDataSource.valueOid(70));
+
+        celda = (FuelCell) request.getSession().getAttribute(CeldaController.PARAM_CELDA);
+
+        totalCiclos = source.retrieveSnmpValueTEST("");
+        totalCiclosStack1 = source.retrieveSnmpValueTEST("");
+        totalCiclosStack2 = source.retrieveSnmpValueTEST("");
+        estadoActual = source.retrieveSnmpValueTEST("");
+        warning384 = source.retrieveSnmpValueTEST("");
+        warning385 = source.retrieveSnmpValueTEST("");
+        warning386 = source.retrieveSnmpValueTEST("");
+        warning387 = source.retrieveSnmpValueTEST("");
+        systemfaulted = false;
+        sdCardPresent = false;
+
+        double voltageOutput = 20;
+        voltageOutputPercent = ConverterHelper.porcentValue(voltageOutput, celda.getNominalVoltage());
+        double amperageoutput = 89;
+        amperageOutputPercent = ConverterHelper.porcentValue(amperageoutput, FuelCell.MAX_AMP);
+        double potenciaOutput = 3.8;
+        potenciaOutputPercent = ConverterHelper.porcentValue(potenciaOutput, celda.getPowerRating());
+
+        double tempReformador = 380;
+        tempReformadorPercent = ConverterHelper.porcentValue(tempReformador, FuelCell.MAX_TEMP_REFORMER);
+        double tempMembrana = 350;
+        tempMembranaPercent = ConverterHelper.porcentValue(tempMembrana, FuelCell.MAX_TEMP_MEMBRANA);
+
+        double combustible = 120;
+        combustiblePercent = ConverterHelper.porcentValue(combustible, FuelCell.TAN_SIZE);
+        double consumo = 890;
+        consumoPercent = ConverterHelper.porcentValue(consumo, celda.getStandByConsumPowerPeek());
+        double potenciaGenerada = 4800;
+        potenciaGeneradaPercent = ConverterHelper.porcentValue(potenciaGenerada, 5000);
+        
+        diasParaMantencion = ConverterHelper.porcentValue(67, 80);
+
 
     %>
 
@@ -170,10 +215,17 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <header>
-                                            Caracteristicas											
-                                            <span class="label label-success pull-right " style="margin: 10px;padding: 10px;">En Falla</span>
+                                            Caracteristicas
+                                            <%  if (!systemfaulted) { %>
+                                            <span class="label label-success pull-right " style="margin: 10px;padding: 10px;">Sin Falla</span>
+                                            <%    } else { %>
+                                            <span class="label label-danger pull-right " style="margin: 10px;padding: 10px;">En Falla</span>
+                                            <% }
+                                                if (sdCardPresent) {   %>
                                             <span class="label label-success pull-right " style="margin: 10px;padding: 10px;">Tarjeta SD presente</span>
-                                            <span class="label label-danger pull-right " style="margin: 10px;padding: 10px;">Online</span>
+                                            <%  } else {  %>
+                                            <span class="label label-danger pull-right " style="margin: 10px;padding: 10px;">Sin Tarjeta de Memoria</span>
+                                            <% }%>
                                         </header>
 
                                         <div class="panel-heading-tools">
@@ -201,25 +253,25 @@
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Descripción</h3>
-                                                                                        <p><%= descripcion %></p>
+                                                                                        <p><%= celda.getSysDescrib()%></p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Tiempo Online</h3>
-                                                                                        <p>#VARIABLE_70</p>
+                                                                                        <p><%= tiempoOnline%></p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Modelo</h3>
-                                                                                        <p>#DATA_BASE</p>
+                                                                                        <p><%= celda.getModelo()%></p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Ubicación</h3>
-                                                                                        <p>Santiago, Chile</p>
+                                                                                        <p><%= celda.getSysLocation()%></p>
                                                                                     </div>
                                                                                 </li>
                                                                             </ul></td>
@@ -228,25 +280,25 @@
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Ciclos Celda</h3>
-                                                                                        <p>Total:</p>
+                                                                                        <p>Total: <%= totalCiclos%></p>
                                                                                         <h3>Ciclos Stack</h3>
-                                                                                        <p>Stack 1</p>
-                                                                                        <p>Stack 2</p>
+                                                                                        <p>Stack 1: <%= totalCiclosStack1%> </p>
+                                                                                        <p>Stack 2: <%= totalCiclosStack2%> </p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Estado Actual</h3>
-                                                                                        <p>#VARIABLE_5</p>
+                                                                                        <p><%= estadoActual%></p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Últimas 4 Advertencias</h3>
-                                                                                        <p>#warning_1</p>
-                                                                                        <p>#warning_2</p>
-                                                                                        <p>#warning_3</p>
-                                                                                        <p>#warning_4</p>
+                                                                                        <p><%= warning384%></p>
+                                                                                        <p><%= warning385%></p>
+                                                                                        <p><%= warning386%></p>
+                                                                                        <p><%= warning387%></p>
                                                                                     </div>
 
                                                                             </ul></td>
@@ -263,20 +315,20 @@
                                                     <div class="row">
                                                         <div class="col-lg-12">
                                                             <div class="stat-wrapper">
-                                                                <h4 class="no-margin-top margin-bottom-2">Voltage Salida: <span class="pull-right">220,547</span></h4>
-                                                                <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="determinate" data-type="primary" data-value="30"></div>
+                                                                <h4 class="no-margin-top margin-bottom-2">Voltage Salida: <%= voltageOutput%> V<span class="pull-right">0 V , <%= celda.getNominalVoltage()%> V </span></h4>
+                                                                <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="determinate" data-type="primary" data-value="<%= voltageOutputPercent%>"></div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <div class="stat-wrapper margin-vertical-4">
-                                                                <h4 class="no-margin-top margin-bottom-2">Corriente Salida: <span class="pull-right">20,421</span></h4>
-                                                                <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="indeterminate" data-type="primary" data-value="57"></div>
+                                                                <h4 class="no-margin-top margin-bottom-2">Corriente Salida: <%= amperageoutput%> A<span class="pull-right">20 A,<%= FuelCell.MAX_AMP%> A</span></h4>
+                                                                <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="determinate" data-type="primary" data-value="<%= amperageOutputPercent%>"></div>
                                                             </div>
                                                         </div>
                                                         <div class="col-lg-12">
                                                             <div class="stat-wrapper">
-                                                                <h4 class="no-margin-top margin-bottom-2">Potencia: <span class="pull-right">278 Watts</span></h4>
-                                                                <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="determinate" data-type="primary" data-value="75"></div>
+                                                                <h4 class="no-margin-top margin-bottom-2">Potencia: <%= potenciaOutput%> kW <span class="pull-right"><%= celda.getPowerRating()%> kW</span></h4>
+                                                                <div class="linear-progress-demo " data-toggle="linear-progress" data-mode="determinate" data-type="primary" data-value="<%= potenciaOutputPercent%>"></div>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -286,23 +338,27 @@
                                             </div>
                                             <div class="row">
                                                 <div class="col-lg-3 col-sm-6">
+                                                    <header><h3>Temperatura Reformador 0° ~ 460°</h3></header>
                                                     <div class="micro-stats layout layout-row layout-align-center margin-top-3">
-                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="52" data-type="danger" data-size="45" data-line-width="3"></div>
-                                                        <div class="micro-stats_title flex padding-horizontal-2">Temperatura Reformador</div>
+                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="<%= tempReformadorPercent%>" data-type="danger" data-size="45" data-line-width="3"></div>
+                                                        <div class="micro-stats_title flex padding-horizontal-2">Temperatura: <%= tempReformador%> °</div>
                                                         <div class="micro-stats_icons"><span class="label label-danger"><i class="material-icons">trending_up</i></span></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3 col-sm-6">
-                                                    <div class="micro-stats layout layout-row layout-align-center margin-top-3">
-                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="87" data-type="warning" data-size="45" data-line-width="3"></div>
-                                                        <div class="micro-stats_title flex padding-horizontal-2">Temperatura Membrana</div>
+                                                    <header><h3>Temperatura membrana 0° ~ 400°</h3></header>
+                                                    <div class="micro-stats layout layout-row layout-align-center margin-top-3">    
+
+                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="<%= tempMembranaPercent%>" data-type="warning" data-size="45" data-line-width="3"></div>
+                                                        <div class="micro-stats_title flex padding-horizontal-2">Temperatura: <%= tempMembrana%> °</div>
                                                         <div class="micro-stats_icons"><span class="label label-warning"><i class="material-icons">report_problem</i></span></div>
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3 col-sm-6">
+                                                    <header><h3>Días último funcionamiento</h3></header>
                                                     <div class="micro-stats layout layout-row layout-align-center margin-top-3">
-                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="25" data-type="success" data-size="45" data-line-width="3"></div>
-                                                        <div class="micro-stats_title flex padding-horizontal-2">Días último funcionamiento</div>
+                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="<%= diasUltimoFuncionamiento%>" data-type="success" data-size="45" data-line-width="3"></div>
+                                                        <div class="micro-stats_title flex padding-horizontal-2">Días: <%= diasUltimoFuncionamiento%></div>
                                                         <div class="micro-stats_icons"><span class="label label-success"><i class="material-icons">trending_down</i></span></div>
                                                     </div>
                                                 </div>
@@ -318,11 +374,14 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <header>Combustible</header>
+                                        <header>
+                                            Combustible 0 ~225 lts<br/>
+                                            Total en Estanque: <%= combustible%> Lt
+                                        </header>
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
-                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="<%= combustible %>" data-type="primary"></div>
+                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="<%= combustiblePercent%>" data-type="primary"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -330,11 +389,14 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <header>Consumo</header>
+                                        <header>
+                                            Consumo 0 ~ <%= celda.getStandByConsumPowerPeek() %> W<br/>
+                                            Total: <%= consumo %> W
+                                        </header>
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
-                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="73" data-type="success"></div>
+                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="<%= consumoPercent%>" data-type="success"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -342,11 +404,14 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <header>Potencia Generada</header>
+                                        <header>
+                                            Potencia Generada: 0 ~ 5000 W <br/>
+                                            potencia: <%= potenciaGenerada %>
+                                        </header>
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
-                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="100" data-type="info"></div>
+                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="<%= potenciaGeneradaPercent %>" data-type="info"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -354,12 +419,12 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <header>Días faltante para la mantención</header>
+                                        <header>Días faltante para la mantención: <%= diasParaMantencion %></header>
 
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
-                                            <div class="bemat-pie-chart-live-update" data-toggle="simple-pie-chart" data-percent="37" data-type="primary"></div>
+                                            <div class="bemat-pie-chart-live-update" data-toggle="simple-pie-chart" data-percent="<%= diasParaMantencion%>" data-type="primary"></div>
                                         </div>
                                     </div>
                                 </div>

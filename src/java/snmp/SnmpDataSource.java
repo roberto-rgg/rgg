@@ -201,10 +201,19 @@ public class SnmpDataSource {
 **/
         //buildCelda(nodo);
     }
+    
+    public static String valueOid(int id){
+        for(EnumFuelCell e : EnumFuelCell.values()) {
+            if(e.getId()==id){
+                return e.getOid();
+            }
+        }
+        return null;
+    }
 
     public FuelCell getCelda() {
         this.celda = new FuelCell();
-
+        
         celda.setFuelConsumption(1.1);
         celda.setNominalVoltage(24);
         celda.setPowerRating(2.5);
@@ -213,8 +222,8 @@ public class SnmpDataSource {
         celda.setSysDescrib("Sistema celda descripcion");
         celda.setSysLocation("cerro los placeres");
         celda.setSysName("rgg");
-        celda.setGpsLatitude("-33333333333");
-        celda.setGpsLongitud("-34322222");
+        celda.setGpsLatitude(-333333333);
+        celda.setGpsLongitud(34322222);
         celda.setId(1);
         celda.setSystemPartNumber("serial ballard");
         celda.setSystemPartNumber("partn number");
