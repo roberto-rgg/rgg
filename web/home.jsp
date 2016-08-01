@@ -131,8 +131,6 @@
                         </div>
                     </section>
 
-
-
                     <section class="page-content">
 
                         <div class="row">
@@ -209,13 +207,13 @@
                             </div>
 
                         </div>
+                        <h1>Caracteristicas</h1>
 
                         <div class="row">
                             <div class="col-lg-12">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <header>
-                                            Caracteristicas
                                             <%  if (!systemfaulted) { %>
                                             <span class="label label-success pull-right " style="margin: 10px;padding: 10px;">Sin Falla</span>
                                             <%    } else { %>

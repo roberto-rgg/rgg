@@ -22,7 +22,7 @@
                     <h3 class="panel-title">Iniciar Sesión</h3>
                 </div>
                 <div class="panel-body">
-                    <form method="POST" action="/BallardWeb/LoginController" >
+                    <form method="POST" action="/BallardWeb/Login" >
                         <div class="form-group">
                             <label for="input_usuario">Correo Electrónico</label>
                             <input id="input_usuario" required="true" type="email" class="form-control"  name="input_correo" placeholder="Usuario">

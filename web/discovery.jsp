@@ -79,9 +79,8 @@
                         <%
                             if (d.nodoIsOnline(n.getIp())) {
                         %>
-                        <form action="/BallardWeb/CeldaController" method="POST" >
+                        <form action="/BallardWeb/Resumen" method="POST" >
                             <input type="hidden" value="<%= n.getId()%>" name="<%= CeldaController.PARAM_NODO%>">
-                            <input type="hidden" value="<%= CeldaController.MAIN %>" name="<%= CeldaController.PARAM_HOME%>">
                             <button class="btn btn-info" type="submit"   >
                                 Detalles
                             </button>

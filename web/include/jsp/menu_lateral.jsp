@@ -57,7 +57,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="home_utilidades.jsp">
+                    <a href="/BallardWeb/Utilidades">
                         <span class="menu-item-ico"><i class="material-icons">extension</i></span>
                         <span class="menu-item-name">Utilidades</span>
                     </a>

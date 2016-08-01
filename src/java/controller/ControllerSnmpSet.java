@@ -1,29 +1,35 @@
-
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package controller;
 
 import java.io.IOException;
-import java.util.List;
+import java.io.PrintWriter;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import modelo.dao.UsuarioImplDAO;
-import modelo.dao.interfaces.UsuarioDAO;
-import modelo.entites.Usuario;
 
 /**
- * Servlet encargado de controlar la autenticación de usuarios.
+ *
  * @author Roberto
  */
-@WebServlet(name = "LoginController", urlPatterns = {"/Login"})
-public class LoginController extends HttpServlet {
+@WebServlet(name = "ControllerSnmpSet", urlPatterns = {"/SnmpSet"})
+public class ControllerSnmpSet extends HttpServlet {
 
-    private String pathDispatcher;
-    public static final String ERROR_MENSAJE = "mensaje";
-    public static final String USUARIO = "usuario";
     
+
+    public static final String PARAM_PARAMETRO = "param_parametro";
+    public static final String PARAM_TIPO = "param_tipo";
+    public static final int TIPO_BOOLEAN = 1;
+    public static final int TIPO_DOUBLE = 2;
+    public static final int TIPO_INT = 3;
+    public static final int TIPO_STRING = 4;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,42 +43,23 @@ public class LoginController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String correo = request.getParameter("input_correo");
-        String clave = request.getParameter("input_clave");
+        String p = request.getParameter("options");
 
-        Usuario usuario = login(correo, clave);
-
-        if (usuario != null) {
-            request.getSession().setAttribute(USUARIO, usuario);
-            pathDispatcher = "discovery.jsp";
-        } else {
-            request.setAttribute(ERROR_MENSAJE, "Usuario o contraseña Equivocada");
-            pathDispatcher = "index.jsp";
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet ControllerSnmpSet</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet ControllerSnmpSet at " + p + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         }
-
-        RequestDispatcher rd = request.getRequestDispatcher(pathDispatcher);
+        
+         RequestDispatcher rd = request.getRequestDispatcher("home_utilidades.jsp");
         rd.forward(request, response);
-
-    }
-
-    /**
-     * Devuelve el usuario correspondiente al nombre y clave entregada.
-     *
-     * @param correo
-     * @param clave
-     * @return usuario existente, null si no existe el usuario.
-     */
-    private Usuario login(String correo, String clave) {
-        UsuarioDAO dao = new UsuarioImplDAO();
-        List<Usuario> usuarios = dao.read();
-        if (usuarios != null) {
-            for (Usuario usuario : usuarios) {
-                if (usuario.getClave().equals(clave) && usuario.getCorreo().equals(correo)) {
-                    return usuario;
-                }
-            }
-        }
-        return null;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -111,7 +98,7 @@ public class LoginController extends HttpServlet {
      */
     @Override
     public String getServletInfo() {
-        return "Servlet encargado de validar el ingreso de usuarios al sistema.";
+        return "Short description";
     }// </editor-fold>
 
 }

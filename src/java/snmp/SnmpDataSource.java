@@ -44,7 +44,17 @@ public class SnmpDataSource {
         return "valor de prueba";
     }
     
-    public String retriveSnmpValue(String oid){
+    public String retrieveSnmpValue(String oid){
+       
+        if(oid.equals(FuelCell.TEST_VALUE_STRING)) {
+            return FuelCell.TEST_VALUE_STRING;
+        }
+        if(oid.equals(FuelCell.TEST_VALUE_DOUBLE)) {
+            return FuelCell.TEST_VALUE_DOUBLE;
+        }
+        if(oid.equals(FuelCell.TEST_VALUE_INT)) {
+            return FuelCell.TEST_VALUE_INT;
+        }
         try {
              respuestaSnmp = com.sendGetProccess(oid);
              snmpObjects = respuestaSnmp.getSnmpvariables();

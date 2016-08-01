@@ -34,6 +34,10 @@ public class FuelCell {
     public static final int MAX_TEMP_REFORMER = 460;
     public static final int MAX_TEMP_MEMBRANA = 400;
 
+    public static final String TEST_VALUE_STRING = "String de prueba";
+    public static final String TEST_VALUE_INT = "17";
+    public static final String TEST_VALUE_DOUBLE = "18.7";
+
     public static final String SYS_DESCR = "1.3.6.1.2.1.1.1";
     public static final String SYS_OBJECT_ID = "1.3.36466.1.2.1.1.2";
     public static final String SYS_UP_TIME = "1.3.36466.1.2.1.1.3";
