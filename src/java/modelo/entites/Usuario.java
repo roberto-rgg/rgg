@@ -17,6 +17,10 @@ public class Usuario {
     private String correo;
     private String clave;
     private List<Nodo> nodos;
+    private String modoResumen;
+    
+    public static final String RESUMEN_MODO_ONLINE= "online"; 
+    public static final String RESUMEN_MODO_OFFLINE= "offline"; 
 
     public Usuario() {
     }
@@ -52,7 +56,13 @@ public class Usuario {
     public void setNodos(List<Nodo> nodos) {
         this.nodos = nodos;
     }
-    
-    
+
+    public String getModoResumen() {
+        return modoResumen;
+    }
+
+    public void setModoResumen(String modoResumen) {
+        this.modoResumen = modoResumen;
+    }
     
 }

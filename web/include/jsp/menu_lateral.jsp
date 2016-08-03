@@ -50,6 +50,7 @@
         <!-- ACA VAN LOS LINKS A LOS DISTINTOS TIPOS DE CONTENIDO CENTRAL -->
         <nav id="sidebar">
             <ul>
+                <% if(usuario.getModoResumen().equals(Usuario.RESUMEN_MODO_ONLINE)) {  %>
                 <li>
                     <a href="/BallardWeb/Resumen" >
                         <span class="menu-item-ico"><i class="material-icons">dashboard</i></span>
@@ -61,8 +62,8 @@
                         <span class="menu-item-ico"><i class="material-icons">extension</i></span>
                         <span class="menu-item-name">Utilidades</span>
                     </a>
-
                 </li>
+                <% } %>
                 
                 <li>
                     <a href="home_reportes.jsp">

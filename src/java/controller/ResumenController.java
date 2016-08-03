@@ -14,6 +14,7 @@ import modelo.dao.interfaces.FuelCellDAO;
 import modelo.dao.interfaces.NodoDAO;
 import modelo.entites.FuelCell;
 import modelo.entites.Nodo;
+import modelo.entites.Usuario;
 import snmp.SnmpDataSource;
 
 /**
@@ -23,13 +24,10 @@ import snmp.SnmpDataSource;
 @WebServlet(name = "CeldaController", urlPatterns = {"/Resumen"})
 public class ResumenController extends HttpServlet {
 
-    private String pathDispatcher;
-    private int idNodo;
-    private FuelCell celda;
-    private SnmpDataSource source;
-
     public static final String PARAM_NODO = "id_nodo";
     public static final String PARAM_CELDA = "celda";
+    public static final String PARAM_MODO = "modo";
+
     public static final String PARAM_TIEMPO_ONLINE = "1";
     public static final String PARAM_MODELO = "2";
     public static final String PARAM_UBICACION = "3";
@@ -85,7 +83,12 @@ public class ResumenController extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        if (request.getSession().getAttribute(LoginController.USUARIO) == null) {
+        Usuario usuario = (Usuario) request.getSession().getAttribute(LoginController.USUARIO);
+        int idNodo;
+        FuelCell celda;
+        SnmpDataSource source;
+
+        if (usuario == null) {
             request.setAttribute(LoginController.ERROR_MENSAJE, "Sesion ha Expirado");
             request.getRequestDispatcher("index.jsp").forward(request, response);
             return;
@@ -107,20 +110,23 @@ public class ResumenController extends HttpServlet {
             }
         }
 
-        source = new SnmpDataSource("10.159.193.213", 161);
+        source = new SnmpDataSource(celda.getNodo().getIp(), celda.getNodo().getPuerto());
 
-        
-        
-        String tiempoOnline = source.retrieveSnmpValue(FuelCell.SYSTEM_ONLINE);
+        String modo = request.getParameter(PARAM_MODO);
+        if (modo != null) {
+            usuario.setModoResumen(modo);
+        }
+
+        String tiempoOnline = source.retrieveSnmpValue(FuelCell.SYSTEM_TOTAL_SYSTEM_RUNTIME);
         request.setAttribute(PARAM_TIEMPO_ONLINE, tiempoOnline);
 
-        String totalCiclos = source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT);
+        String totalCiclos = source.retrieveSnmpValue(FuelCell.SYSTEM_TOTAL_SYSTEM_CYCLES);
         request.setAttribute(PARAM_TOTAL_CICLOS, totalCiclos);
 
-        String totalCiclosStack1 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT);
+        String totalCiclosStack1 = source.retrieveSnmpValue(FuelCell.SYSTEM_STACK_1_CYCLES);
         request.setAttribute(PARAM_TOTAL_CICLOS_ST_1, totalCiclosStack1);
 
-        String totalCiclosStack2 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT);
+        String totalCiclosStack2 = source.retrieveSnmpValue(FuelCell.SYSTEM_STACK_2_CYCLES);
         request.setAttribute(PARAM_TOTAL_CICLOS_ST_2, totalCiclosStack2);
 
         String estadoActual = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);

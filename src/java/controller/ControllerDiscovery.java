@@ -32,18 +32,19 @@ public class ControllerDiscovery extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
-        
+
         String ip = request.getParameter("ip_nodo");
         Discovery discovery = new Discovery();
-        
-        if(discovery.nodoIsOnline(ip)) {
-           response.getWriter().write("Nodo Online");
+        System.out.println("peticion nodo:" + ip);
+
+        if (discovery.nodoIsOnline(ip)) {
+            response.getWriter().write("conectado");
         } else {
-            response.getWriter().write("nodo offline");
+            response.getWriter().write("desconectado");
         }
-                
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

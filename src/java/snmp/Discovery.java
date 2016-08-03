@@ -22,7 +22,7 @@ public class Discovery {
         boolean online = false;
         try {
             ping = InetAddress.getByName(ip);
-            if (ping.isReachable(2000)) {
+            if (ping.isReachable(5000)) {
                 online = true;
             } 
         } catch (IOException ex) {
