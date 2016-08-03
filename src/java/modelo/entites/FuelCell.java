@@ -51,6 +51,45 @@ public class FuelCell {
     public static final String GPS_LATITUDE = "1.3.36466.1.1.1.1.1.4";
     public static final String GPS_LONGITUDE = "1.3.36466.1.1.1.1.1.5";
 
+    public static final String TOTAL_SYSTEM_CYCLES = "1.3.36466.1.1.1.2.1.7";
+    public static final String SYSTEM_STATE_DESC = "1.3.36466.1.1.1.2.1.1";
+    public static final String SYSTEM_FAULTED = "1.3.36466.1.1.1.2.1.3";
+    public static final String OUTPUT_VOLTAGE = "1.3.36466.1.1.1.2.1.10";
+    public static final String OUTPUT_CURRENT = "1.3.36466.1.1.1.2.1.11";
+    public static final String GROSS_POWER = "1.3.36466.1.1.1.2.1.12";
+    public static final String CALCULATED_GROSS_POWER = "1.3.36466.1.3.1.6.2.4";
+
+    public static final String INPUTS_TEMP_REFORMER_BOTTOM = "1.3.36466.1.3.1.2.2.4";
+    public static final String INPUTS_TEMP_MEMBRANE = "1.3.36466.1.3.1.2.2.7";
+    public static final String SYSTEM_TIME_UNTIL_FILTER_MAINT = "1.3.36466.1.3.1.4.1.7";
+    public static final String PARAMS_TIME_BETWEEN_FILTER_MAINT = "1.3.36466.1.3.1.5.1.8";
+    public static final String PARAMS_DAYS_SINCE_LAST_SYSTEM_ONLINE = "1.3.36466.1.3.1.5.2.2";
+    public static final String INPUTS_FUEL_LEVEL = "1.3.36466.1.3.2.1.4";
+
+    public static final String SYSTEM_ONLINE = "1.3.36466.1.1.1.2.1.2";
+    public static final String STACK_FAULTED = "1.3.36466.1.1.1.2.1.4";
+    public static final String LOW_FUEL = "1.3.36466.1.1.1.2.1.5";
+    public static final String OUT_OF_FUEL = "1.3.36466.1.1.1.2.1.6";
+    public static final String TOTAL_SYSTEM_RUNTIME = "1.3.36466.1.1.1.2.1.8";
+    public static final String NET_KILOWATT_HOURS = "1.3.36466.1.1.1.2.1.9";
+
+    public static final String SYSTEM_TIME_GMT = "1.3.36466.1.1.1.2.1.13";
+    public static final String GMT_OFFSET_HOURS = "1.3.36466.1.1.1.2.1.14";
+    public static final String GMT_OFFSET_QUARTER_HOURS = "1.3.36466.1.1.1.2.1.15";
+    public static final String SYSTEM_TIME_LOCAL = "1.3.36466.1.1.1.2.1.16";
+
+    public static final String SYSTEM_TOTAL_SYSTEM_RUNTIME = "1.3.36466.1.3.1.4.1.6";
+    public static final String SYSTEM_TOTAL_SYSTEM_CYCLES = "1.3.36466.1.3.1.4.1.5";
+    public static final String SYSTEM_STACK_1_CYCLES = "1.3.36466.1.3.1.4.1.1";
+    public static final String SYSTEM_STACK_2_CYCLES = "1.3.36466.1.3.1.4.1.2";
+
+    public static final String SD_CARD_PRESENT = "1.3.36466.1.3.2.3.2.1";
+
+    public static final String WARNING_DESCRIPTION_VAL_384 = "1.3.36466.1.3.3.4.1.3.1";
+    public static final String WARNING_DESCRIPTION_VAL_385 = "1.3.36466.1.3.3.4.1.3.2";
+    public static final String WARNING_DESCRIPTION_VAL_386 = "1.3.36466.1.3.3.4.1.3.3";
+    public static final String WARNING_DESCRIPTION_VAL_387 = "1.3.36466.1.3.3.4.1.3.4";
+
     public String snmpOidQuery(String oid) {
         return null;
     }

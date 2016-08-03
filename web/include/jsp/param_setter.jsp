@@ -16,9 +16,9 @@
 
 %>
 
-<button type="button" class="btn btn-raised btn-info" data-toggle="modal"  data-target="#modal_param_<%=id %>">Configurar</button>
+<button type="button" class="btn btn-raised btn-info" data-toggle="modal"  data-target="#modal_param_<%=id%>">Configurar</button>
 
-<div style="display: none;" id="modal_param_<%=id %>" class="modal fade">
+<div style="display: none;" id="modal_param_<%=id%>" class="modal fade">
     <div style="transform: scale(0.146667); opacity: 0; top: 425.3px; left: 348px;" class="modal-dialog">
         <div class="modal-content">
             <form class="form" action="/BallardWeb/SnmpSet" method="POST" >
@@ -26,14 +26,14 @@
                     <h4 class="modal-title">Configuracion Parametro</h4>
                 </div>
                 <div class="modal-body">
-                    
-                    
+
+
                     <p>Administrar Nuevo valor del parametro</p>
-                    <% if(tipoParametro==ControllerSnmpSet.TIPO_BOOLEAN) {    %>
+                    <% if (tipoParametro == ControllerSnmpSet.TIPO_BOOLEAN) {    %>
                     <% boolean toggle = Boolean.parseBoolean(parametro);  %>
                     <div class="btn-group" data-toggle="buttons">
-                        
-                        <% if(toggle) { %>
+
+                        <% if (toggle) { %>
                         <label class="btn btn-primary active">
                             <input type="radio" name="options" id="option1" autocomplete="off" checked value="on" >ON
                         </label>
@@ -49,16 +49,21 @@
                         </label>
                         <% } %>
                     </div>
-                    
-                    <%     } else if (tipoParametro==ControllerSnmpSet.TIPO_STRING) {          %>
-                    
+
+                    <%     } else if (tipoParametro == ControllerSnmpSet.TIPO_STRING) {%>
+
                     <div class="form-group">
-                        <input type="text"  class="form-control" id="regular1" value="<%= parametro%>" >
+                        <input type="text" required="true" class="form-control" id="regular1" value="<%= parametro%>" >
                         <label for="regular1">Valor</label>
                     </div>
-                        <%
-                            }
-                            %>
+                    <% } else if (tipoParametro == ControllerSnmpSet.TIPO_INT) {%>
+
+                    <div class="form-group">
+                        <input type="number" required="true" class="form-control" id="regular1" value="<%= parametro%>" >
+                        <label for="regular1">Valor</label>
+                    </div>
+
+                    <% }%>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary btn-flat btn-ripple materialRipple-light materialRipple-btn" data-dismiss="modal">Cancelar<div class="materialRipple-md-ripple-container"></div></button>

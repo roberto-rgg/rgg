@@ -51,7 +51,7 @@
         <nav id="sidebar">
             <ul>
                 <li>
-                    <a href="home.jsp" >
+                    <a href="/BallardWeb/Resumen" >
                         <span class="menu-item-ico"><i class="material-icons">dashboard</i></span>
                         <span class="menu-item-name">Resumen Estado Actual</span>
                     </a>

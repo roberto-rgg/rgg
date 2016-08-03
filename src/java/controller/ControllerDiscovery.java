@@ -7,19 +7,19 @@ package controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import snmp.Discovery;
 
 /**
  *
  * @author Roberto
  */
-@WebServlet(name = "ControllerTest", urlPatterns = {"/ControllerTest"})
-public class ControllerTest extends HttpServlet {
+@WebServlet(name = "ControllerDiscovery", urlPatterns = {"/Discovery"})
+public class ControllerDiscovery extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -32,28 +32,18 @@ public class ControllerTest extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-
-        String nombre = "ff"; //request.getParameter("nombre");
-            String apellido = "eer";//request.getParameter("apellido");
         
-            request.setAttribute("nombre", nombre);
-            request.setAttribute("apellido", apellido);
-            RequestDispatcher rd = request.getRequestDispatcher("test_link.jsp");
-            
-        rd.forward(request, response);
-        /**
-        try (PrintWriter out = response.getWriter()) {
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ControllerTest</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ControllerTest at " + nombre + " " + apellido + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }**/
+        response.setContentType("text/html;charset=UTF-8");
+        
+        String ip = request.getParameter("ip_nodo");
+        Discovery discovery = new Discovery();
+        
+        if(discovery.nodoIsOnline(ip)) {
+           response.getWriter().write("Nodo Online");
+        } else {
+            response.getWriter().write("nodo offline");
+        }
+                
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -20,10 +20,6 @@ public class SnmpOID {
     private List<SnmpObject> snmpSystemCommands;
     private List<SnmpObject> snmpLCDCommands;
 
-    private List<SnmpGroup> groupFaultSnmp;
-    private List<SnmpGroup> groupWarningSnmp;
-    private List<SnmpGroup> groupStack1FaultSnmp;
-    private List<SnmpGroup> groupStack2FaultSnmp;
 
     /**
      * inicia los oid enlistados, agrupados y con descripciones de variables.
@@ -115,56 +111,7 @@ public class SnmpOID {
         snmpParameters.add(new SnmpObject(59, Read.Parameters.PARAMS_4MA_BATTERY_CURRENT, "sin descripción", null));
         snmpParameters.add(new SnmpObject(60, Read.Parameters.PARAMS_20MA_BATTERY_CURRENT, "sin descripción", null));
 
-        groupFaultSnmp = new ArrayList();
-        groupWarningSnmp = new ArrayList();
-        groupStack1FaultSnmp = new ArrayList();
-        groupStack2FaultSnmp = new ArrayList();
-
-        SnmpGroup grupo1;
-        SnmpGroup grupo2;
-        SnmpGroup grupo3;
-        SnmpGroup grupo4;
-
-        for (int x = 0; x < 20; x++) {
-
-            grupo1 = new SnmpGroup(
-                    new SnmpObject[]{
-                        new SnmpObject(Read.FaultHistory.SYSTEM_FAULT_ID + "." + x, "id " + x, null),
-                        new SnmpObject(Read.FaultHistory.SYSTEM_FAULT_TIME + "." + x, "id " + x, null),
-                        new SnmpObject(Read.FaultHistory.SYSTEM_FAULT_DESCRIPTION + "." + x, "id " + x, null)
-                    }
-            );
-            groupFaultSnmp.add(grupo1);
-
-            grupo2 = new SnmpGroup(
-                    new SnmpObject[]{
-                        new SnmpObject(Read.FaultHistory.SYSTEM_WARNING_ID + "." + x, "id " + x, null),
-                        new SnmpObject(Read.FaultHistory.SYSTEM_WARNING_TIME + "." + x, "id " + x, null),
-                        new SnmpObject(Read.FaultHistory.SYSTEM_WARNING_DESCRIPTION + "." + x, "id " + x, null)
-                    }
-            );
-            groupWarningSnmp.add(grupo2);
-
-            grupo3 = new SnmpGroup(
-                    new SnmpObject[]{
-                        new SnmpObject(Read.FaultHistory.STACK_1_FAULT_ID + "." + x, "id " + x, null),
-                        new SnmpObject(Read.FaultHistory.STACK_1_FAULT_TIME + "." + x, "id " + x, null),
-                        new SnmpObject(Read.FaultHistory.STACK_1_FAULT_DESCRIPTION + "." + x, "id " + x, null)
-                    }
-            );
-            groupStack1FaultSnmp.add(grupo3);
-
-            grupo4 = new SnmpGroup(
-                    new SnmpObject[]{
-                        new SnmpObject(Read.FaultHistory.STACK_2_FAULT_ID + "." + x, "id " + x, null),
-                        new SnmpObject(Read.FaultHistory.STACK_2_FAULT_TIME + "." + x, "id " + x, null),
-                        new SnmpObject(Read.FaultHistory.STACK_2_FAULT_DESCRIPTION + "." + x, "id " + x, null)
-                    }
-            );
-            groupWarningSnmp.add(grupo4);
-
-        }
-
+        
         snmpObjects.addAll(snmpSystem);
         snmpObjects.addAll(snmpOperation);
         snmpObjects.addAll(snmpInputs);

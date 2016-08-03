@@ -21,7 +21,7 @@ import snmp.SnmpDataSource;
  * @author Roberto
  */
 @WebServlet(name = "CeldaController", urlPatterns = {"/Resumen"})
-public class CeldaController extends HttpServlet {
+public class ResumenController extends HttpServlet {
 
     private String pathDispatcher;
     private int idNodo;
@@ -60,6 +60,8 @@ public class CeldaController extends HttpServlet {
     public static final String PARAM_TEMP_MEMBRANA_PERCT = "23";
     public static final String PARAM_ULTM_FUNCIONANDO = "24";
 
+    public static final String PARAM_DIAS_ULTIMO_ARRANQUE = "24.5";
+
     public static final String PARAM_COMBUSTIBLE = "25";
     public static final String PARAM_COMBUSTIBLE_PERCT = "26";
 
@@ -85,76 +87,111 @@ public class CeldaController extends HttpServlet {
 
         if (request.getSession().getAttribute(LoginController.USUARIO) == null) {
             request.setAttribute(LoginController.ERROR_MENSAJE, "Sesion ha Expirado");
-            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-            rd.forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
             return;
         }
 
-        if (request.getParameter(PARAM_NODO) != null) {
-            idNodo = Integer.parseInt(request.getParameter(PARAM_NODO));
+        celda = (FuelCell) request.getSession().getAttribute(PARAM_CELDA);
 
-            request.getSession().setAttribute(PARAM_NODO, idNodo);
-            //leer nodo
-            NodoDAO daoNodo = new NodoImplDAO();
-            Nodo nodo = daoNodo.read(idNodo);
-            //leer celda
-            FuelCellDAO daoFuelCell = new FuelCellImplDAO();
-            celda = daoFuelCell.read(nodo.getId());
-            celda.setNodo(nodo);
-            request.getSession().setAttribute(PARAM_CELDA, celda);
-            pathDispatcher = "home.jsp";
+        if (celda == null) {
+            String paramNodo = request.getParameter(PARAM_NODO);
+            if (paramNodo != null) {
+                NodoDAO daoNodo = new NodoImplDAO();
+                idNodo = Integer.parseInt(paramNodo);
+                Nodo nodo = daoNodo.read(idNodo);
+                FuelCellDAO daoFuelCell = new FuelCellImplDAO();
+                celda = daoFuelCell.read(nodo.getId());
+                celda.setNodo(nodo);
+                request.getSession().setAttribute(PARAM_CELDA, celda);
 
+            }
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher(pathDispatcher);
-        rd.forward(request, response);
+        source = new SnmpDataSource("10.159.193.213", 161);
 
-    }
-
-    public void loadSnmpData(HttpServletRequest request) {
-        source = new SnmpDataSource();
-
-        int tiempoOnline = ConverterHelper.integerValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT));
+        
+        
+        String tiempoOnline = source.retrieveSnmpValue(FuelCell.SYSTEM_ONLINE);
         request.setAttribute(PARAM_TIEMPO_ONLINE, tiempoOnline);
 
-        int totalCiclos = ConverterHelper.integerValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT));
+        String totalCiclos = source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT);
         request.setAttribute(PARAM_TOTAL_CICLOS, totalCiclos);
 
-        int totalCiclosStack1 = ConverterHelper.integerValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT));
+        String totalCiclosStack1 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT);
         request.setAttribute(PARAM_TOTAL_CICLOS_ST_1, totalCiclosStack1);
 
-        int totalCiclosStack2 = ConverterHelper.integerValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT));
+        String totalCiclosStack2 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT);
         request.setAttribute(PARAM_TOTAL_CICLOS_ST_2, totalCiclosStack2);
 
         String estadoActual = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
         request.setAttribute(PARAM_ESTADO_ACTUAL, estadoActual);
-        
+
         String warning384 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        request.setAttribute(PARAM_WARN_384, warning384);
+
         String warning385 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        request.setAttribute(PARAM_WARN_385, warning385);
+
         String warning386 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        request.setAttribute(PARAM_WARN_386, warning386);
+
         String warning387 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
-        boolean systemfaulted = false;
-        boolean sdCardPresent = false;
-        double voltageOutput = 20;
+        request.setAttribute(PARAM_WARN_387, warning387);
+
+        boolean systemfaulted = ConverterHelper.booleanValue("1");
+        request.setAttribute(PARAM_SYSTEM_FAULTED, systemfaulted);
+
+        boolean sdCardPresent = ConverterHelper.booleanValue("1");
+        request.setAttribute(PARAM_SDCARD_PRESENT, sdCardPresent);
+
+        double voltageOutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
         double voltageOutputPercent = ConverterHelper.porcentValue(voltageOutput, celda.getNominalVoltage());
-        double amperageoutput = 89;
+        request.setAttribute(PARAM_VOLT_OUT, voltageOutput);
+        request.setAttribute(PARAM_VOLT_OUT_PERCT, voltageOutputPercent);
+
+        double amperageoutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
         double amperageOutputPercent = ConverterHelper.porcentValue(amperageoutput, FuelCell.MAX_AMP);
-        double potenciaOutput = 3.8;
+        request.setAttribute(PARAM_AMP_OUT, amperageoutput);
+        request.setAttribute(PARAM_AMP_OUT_PERCT, amperageOutputPercent);
+
+        double potenciaOutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
         double potenciaOutputPercent = ConverterHelper.porcentValue(potenciaOutput, celda.getPowerRating());
+        request.setAttribute(PARAM_POTENCIA_OUT, potenciaOutput);
+        request.setAttribute(PARAM_POTENCIA_OUT_PERCT, potenciaOutputPercent);
 
-        double tempReformador = 380;
+        double tempReformador = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
         double tempReformadorPercent = ConverterHelper.porcentValue(tempReformador, FuelCell.MAX_TEMP_REFORMER);
-        double tempMembrana = 350;
+        request.setAttribute(PARAM_TEMP_REFORMER, tempReformador);
+        request.setAttribute(PARAM_TEMP_REFORMER_PERCT, tempReformadorPercent);
+
+        double tempMembrana = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
         double tempMembranaPercent = ConverterHelper.porcentValue(tempMembrana, FuelCell.MAX_TEMP_MEMBRANA);
+        request.setAttribute(PARAM_TEMP_MEMBRANA, tempMembrana);
+        request.setAttribute(PARAM_TEMP_MEMBRANA_PERCT, tempMembranaPercent);
 
-        double combustible = 120;
+        double combustible = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
         double combustiblePercent = ConverterHelper.porcentValue(combustible, FuelCell.TAN_SIZE);
-        double consumo = 890;
-        double consumoPercent = ConverterHelper.porcentValue(consumo, celda.getStandByConsumPowerPeek());
-        double potenciaGenerada = 4800;
-        double potenciaGeneradaPercent = ConverterHelper.porcentValue(potenciaGenerada, 5000);
+        request.setAttribute(PARAM_COMBUSTIBLE, combustible);
+        request.setAttribute(PARAM_COMBUSTIBLE_PERCT, combustiblePercent);
 
-        double diasParaMantencion = ConverterHelper.porcentValue(67, 80);
+        double consumo = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double consumoPercent = ConverterHelper.porcentValue(consumo, celda.getStandByConsumPowerPeek());
+        request.setAttribute(PARAM_CONSUMO, consumo);
+        request.setAttribute(PARAM_CONSUMO_PERCT, consumoPercent);
+
+        double potenciaGenerada = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double potenciaGeneradaPercent = ConverterHelper.porcentValue(potenciaGenerada, 5000);
+        request.setAttribute(PARAM_POTENCIA_GENERADA, potenciaGenerada);
+        request.setAttribute(PARAM_POTENCIA_GENERADA_PERCT, potenciaGeneradaPercent);
+
+        double diasParaMantencion = ConverterHelper.doubleValue("30");
+        request.setAttribute(PARAM_DIAS_TO_MANTENANCE, diasParaMantencion);
+
+        String diasUltimoArranque = source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT);
+        request.setAttribute(PARAM_DIAS_ULTIMO_ARRANQUE, diasUltimoArranque);
+
+        RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+        rd.forward(request, response);
 
     }
 

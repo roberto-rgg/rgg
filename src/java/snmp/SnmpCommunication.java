@@ -67,7 +67,7 @@ public class SnmpCommunication {
 
         // Create Snmp object for sending data to Agent
         Snmp snmp = new Snmp(transport);
-        ResponseEvent response = snmp.get(pdu, comtarget);
+        ResponseEvent response = snmp.getNext(pdu, comtarget);
 
         // Process Agent Response
         if (response != null) {

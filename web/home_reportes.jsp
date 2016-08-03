@@ -38,10 +38,16 @@
                     <!-- cabezera contenido central -->
                     <section class="page-header alternative-header">
                         <div class="page-header_title">
-                            
+
                             <h1>
                                 Reportes 
                                 <span class="page-header_subtitle">Bienvenido a Ballard Control</span>
+                                <form class="form">
+                                    <div class="form-group">
+                                        <input type="number" class="form-control" id="regular1">
+                                        <label for="regular1">Regular input</label>
+                                    </div>
+                                </form>
                             </h1>
                         </div>
                     </section>

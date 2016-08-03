@@ -4,105 +4,68 @@
     Author     : Roberto
 --%>
 
-<%@page import="controller.CeldaController"%>
-<%@page import="controller.helper.ConverterHelper"%>
-<%@page import="snmp.SnmpDataSource"%>
-<%@page import="snmp.SnmpCommunication"%>
+<%@page import="controller.ResumenController"%>
 <%@page import="modelo.entites.FuelCell"%>
-<%@page import="snmp.SnmpOID"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="java.util.List"%>
-<%@page import="snmp.SnmpObject"%>
 <%@page import="modelo.entites.Usuario"%>
 <%@page import="controller.LoginController"%>
-<%@page contentType="text/html" pageEncoding="UTF-8" errorPage="error_page.jsp" %>
+<%@page contentType="text/html" pageEncoding="UTF-8"  %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> 
 <html class="no-js"> <!--<![endif]-->
-    <%!
-        private FuelCell celda;
-        private String tiempoOnline;
-        private String modelo;
-        private String ubicacion;
-        private String totalCiclos;
-        private String totalCiclosStack1;
-        private String totalCiclosStack2;
-        private String estadoActual;
-        private String warning384;
-        private String warning385;
-        private String warning386;
-        private String warning387;
-        private boolean systemfaulted;
-        private boolean sdCardPresent;
-
-        private double voltageOutputPercent;
-        private double amperageOutputPercent;
-        private double potenciaOutputPercent;
-
-        private double tempReformadorPercent;
-        private double tempMembranaPercent;
-        private double diasUltimoFuncionamiento;
-
-        private double combustiblePercent;
-        private double consumoPercent;
-        private double potenciaGeneradaPercent;
-        private double diasParaMantencion;
-
-        private SnmpCommunication snmpCom;
-
-    %>
+    <%! private FuelCell celda;%>
 
     <%
-
         if (request.getSession().getAttribute(LoginController.USUARIO) == null) {
             request.setAttribute(LoginController.ERROR_MENSAJE, "Sesion ha Expirado");
-            RequestDispatcher rd = request.getRequestDispatcher("index.jsp");
-            rd.forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
             return;
         }
 
-        snmpCom = new SnmpCommunication(null, null, 2, null, 1);
-        SnmpDataSource source = new SnmpDataSource();
+        celda = (FuelCell) request.getSession().getAttribute(ResumenController.PARAM_CELDA);
 
-        tiempoOnline = source.retrieveSnmpValueTEST(SnmpDataSource.valueOid(70));
+        String tiempoOnline = request.getAttribute(ResumenController.PARAM_TIEMPO_ONLINE).toString();
+        String totalCiclos = request.getAttribute(ResumenController.PARAM_TOTAL_CICLOS).toString();
 
-        celda = (FuelCell) request.getSession().getAttribute(CeldaController.PARAM_CELDA);
+        String totalCiclosStack1 = request.getAttribute(ResumenController.PARAM_TOTAL_CICLOS_ST_1).toString();
+        String totalCiclosStack2 = request.getAttribute(ResumenController.PARAM_TOTAL_CICLOS_ST_2).toString();
+        String estadoActual = request.getAttribute(ResumenController.PARAM_ESTADO_ACTUAL).toString();
+        String warning384 = request.getAttribute(ResumenController.PARAM_WARN_384).toString();
+        String warning385 = request.getAttribute(ResumenController.PARAM_WARN_385).toString();
+        String warning386 = request.getAttribute(ResumenController.PARAM_WARN_386).toString();
+        String warning387 = request.getAttribute(ResumenController.PARAM_WARN_387).toString();
+        boolean systemfaulted = (boolean) request.getAttribute(ResumenController.PARAM_SYSTEM_FAULTED);
+        boolean sdCardPresent = (boolean) request.getAttribute(ResumenController.PARAM_SDCARD_PRESENT);
 
-        totalCiclos = source.retrieveSnmpValueTEST("");
-        totalCiclosStack1 = source.retrieveSnmpValueTEST("");
-        totalCiclosStack2 = source.retrieveSnmpValueTEST("");
-        estadoActual = source.retrieveSnmpValueTEST("");
-        warning384 = source.retrieveSnmpValueTEST("");
-        warning385 = source.retrieveSnmpValueTEST("");
-        warning386 = source.retrieveSnmpValueTEST("");
-        warning387 = source.retrieveSnmpValueTEST("");
-        systemfaulted = false;
-        sdCardPresent = false;
+        String voltageOutput = request.getAttribute(ResumenController.PARAM_VOLT_OUT).toString();
+        String voltageOutputPercent = request.getAttribute(ResumenController.PARAM_VOLT_OUT_PERCT).toString();
 
-        double voltageOutput = 20;
-        voltageOutputPercent = ConverterHelper.porcentValue(voltageOutput, celda.getNominalVoltage());
-        double amperageoutput = 89;
-        amperageOutputPercent = ConverterHelper.porcentValue(amperageoutput, FuelCell.MAX_AMP);
-        double potenciaOutput = 3.8;
-        potenciaOutputPercent = ConverterHelper.porcentValue(potenciaOutput, celda.getPowerRating());
+        String amperageoutput = request.getAttribute(ResumenController.PARAM_AMP_OUT).toString();
+        String amperageOutputPercent = request.getAttribute(ResumenController.PARAM_VOLT_OUT_PERCT).toString();
 
-        double tempReformador = 380;
-        tempReformadorPercent = ConverterHelper.porcentValue(tempReformador, FuelCell.MAX_TEMP_REFORMER);
-        double tempMembrana = 350;
-        tempMembranaPercent = ConverterHelper.porcentValue(tempMembrana, FuelCell.MAX_TEMP_MEMBRANA);
+        String potenciaOutput = request.getAttribute(ResumenController.PARAM_POTENCIA_OUT).toString();
+        String potenciaOutputPercent = request.getAttribute(ResumenController.PARAM_POTENCIA_OUT_PERCT).toString();
 
-        double combustible = 120;
-        combustiblePercent = ConverterHelper.porcentValue(combustible, FuelCell.TAN_SIZE);
-        double consumo = 890;
-        consumoPercent = ConverterHelper.porcentValue(consumo, celda.getStandByConsumPowerPeek());
-        double potenciaGenerada = 4800;
-        potenciaGeneradaPercent = ConverterHelper.porcentValue(potenciaGenerada, 5000);
-        
-        diasParaMantencion = ConverterHelper.porcentValue(67, 80);
+        String tempReformador = request.getAttribute(ResumenController.PARAM_TEMP_REFORMER).toString();
+        String tempReformadorPercent = request.getAttribute(ResumenController.PARAM_TEMP_REFORMER_PERCT).toString();
 
+        String tempMembrana = request.getAttribute(ResumenController.PARAM_TEMP_MEMBRANA).toString();
+        String tempMembranaPercent = request.getAttribute(ResumenController.PARAM_TEMP_MEMBRANA_PERCT).toString();
+
+        String diasDesdeUltimoArranque = request.getAttribute(ResumenController.PARAM_DIAS_ULTIMO_ARRANQUE).toString();
+
+        String combustible = request.getAttribute(ResumenController.PARAM_COMBUSTIBLE).toString();
+        String combustiblePercent = request.getAttribute(ResumenController.PARAM_COMBUSTIBLE_PERCT).toString();
+
+        String consumo = request.getAttribute(ResumenController.PARAM_CONSUMO).toString();
+        String consumoPercent = request.getAttribute(ResumenController.PARAM_CONSUMO_PERCT).toString();
+
+        String potenciaGenerada = request.getAttribute(ResumenController.PARAM_POTENCIA_GENERADA).toString();
+        String potenciaGeneradaPercent = request.getAttribute(ResumenController.PARAM_POTENCIA_GENERADA_PERCT).toString();
+
+        String diasParaMantencion = request.getAttribute(ResumenController.PARAM_DIAS_TO_MANTENANCE).toString();
 
     %>
 
@@ -112,11 +75,12 @@
     <body class="dark-sidebar dark-header-brand container-fluid">
         <div id="page-wrapper">
 
-            <!-- menu lateral izquierdo -->
+            <!-- SECCION MENU LATERAL -->
             <%@include file="include/jsp/menu_lateral.jsp" %>
 
             <section id="right-content">
 
+                <!-- SECCION HEADER -->
                 <%@include file="include/jsp/header.jsp" %>
 
                 <section id="right-content-wrapper">
@@ -132,7 +96,7 @@
                     </section>
 
                     <section class="page-content">
-
+                        <!-- SECCION ESTADISTICAS -->
                         <div class="row">
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
@@ -140,7 +104,7 @@
                                         <div class="mini-card mini-card-primary">
                                             <div class="mini-card-left">
                                                 <span>Fallas últimos 7 días</span>
-                                                <h2>#FALLAS</h2>
+                                                <span class="badge badge-warning">4</span>
                                             </div>
                                             <div class="mini-card-right">
                                                 <div class="bemat-mini-chart bemat-mini-chart-primary">
@@ -158,11 +122,11 @@
                                         <div class="mini-card mini-card-success">
                                             <div class="mini-card-left">
                                                 <span>Advertencias últimos 7 dias</span>
-                                                <h2>#ADVERTENCIAS</h2>
+                                                <span class="badge badge-warning">7</span>
                                             </div>
                                             <div class="mini-card-right">
                                                 <div class="bemat-mini-chart bemat-mini-chart-success">
-                                                    <span class="peity-bar">1,5,0,6,0,6,6</span>
+                                                    <span class="peity-bar">1,2,0,3,0,1,0</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -175,7 +139,7 @@
                                         <div class="mini-card mini-card-info">
                                             <div class="mini-card-left">
                                                 <span>Arranques últimos 7 días</span>
-                                                <h2>#ARRANQUES</h2>
+                                                <span class="badge badge-warning">6</span>
                                             </div>
                                             <div class="mini-card-right">
                                                 <div class="bemat-mini-chart bemat-mini-chart-info">
@@ -194,7 +158,7 @@
                                         <div class="mini-card mini-card-danger">
                                             <div class="mini-card-left">
                                                 <span>Potencia generada últimos 5 días</span>
-                                                <h2>#POTENCIA</h2>
+                                                <span class="badge badge-warning ">4</span>
                                             </div>
                                             <div class="mini-card-right">
                                                 <div class="bemat-mini-chart bemat-mini-chart-danger">
@@ -207,6 +171,8 @@
                             </div>
 
                         </div>
+
+                        <!-- SECCION RESUMEN -->
                         <h1>Caracteristicas</h1>
 
                         <div class="row">
@@ -353,11 +319,13 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-lg-3 col-sm-6">
-                                                    <header><h3>Días último funcionamiento</h3></header>
+                                                    <header><h3>Días desde el último arranque</h3></header>
                                                     <div class="micro-stats layout layout-row layout-align-center margin-top-3">
-                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="<%= diasUltimoFuncionamiento%>" data-type="success" data-size="45" data-line-width="3"></div>
-                                                        <div class="micro-stats_title flex padding-horizontal-2">Días: <%= diasUltimoFuncionamiento%></div>
-                                                        <div class="micro-stats_icons"><span class="label label-success"><i class="material-icons">trending_down</i></span></div>
+                                                        <div class="micro-chart-1" data-toggle="simple-pie-chart" data-percent="" data-type="success" data-size="45" data-line-width="3">
+
+                                                        </div>
+                                                        <div class="micro-stats_title flex padding-horizontal-2">Días: <%= diasDesdeUltimoArranque%></div>
+                                                        <div class="micro-stats_icons"><span class="label label-success"><i class="material-icons">trending_up</i></span></div>
                                                     </div>
                                                 </div>
 
@@ -368,6 +336,7 @@
                             </div>
                         </div>
 
+                        <!-- SECCION INDICADORES -->
                         <div class="row">
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
@@ -388,8 +357,8 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <header>
-                                            Consumo 0 ~ <%= celda.getStandByConsumPowerPeek() %> W<br/>
-                                            Total: <%= consumo %> W
+                                            Consumo 0 ~ <%= celda.getStandByConsumPowerPeek()%> W<br/>
+                                            Total: <%= consumo%> W
                                         </header>
                                     </div>
                                     <div class="panel-body no-top-padding">
@@ -404,12 +373,12 @@
                                     <div class="panel-heading">
                                         <header>
                                             Potencia Generada: 0 ~ 5000 W <br/>
-                                            potencia: <%= potenciaGenerada %>
+                                            potencia: <%= potenciaGenerada%>
                                         </header>
                                     </div>
                                     <div class="panel-body no-top-padding">
                                         <div class="layout layout-align-center-vertical">
-                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="<%= potenciaGeneradaPercent %>" data-type="info"></div>
+                                            <div class="bemat-pie-chart" data-toggle="simple-pie-chart" data-percent="<%= potenciaGeneradaPercent%>" data-type="info"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -417,16 +386,17 @@
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
-                                        <header>Días faltante para la mantención: <%= diasParaMantencion %></header>
+                                        <header>Días faltante para la mantención: <%= diasParaMantencion%></header>
 
                                     </div>
-                                    <div class="panel-body no-top-padding">
+                                    <div class="panel-body no-top-padding" style="height: 176px;">
                                         <div class="layout layout-align-center-vertical">
-                                            <div class="bemat-pie-chart-live-update" data-toggle="simple-pie-chart" data-percent="<%= diasParaMantencion%>" data-type="primary"></div>
+                                            <h1><%= diasParaMantencion%></h1>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         </div>
 
                     </section><!-- /#page-content -->

@@ -5,7 +5,7 @@
 --%>
 
 <%@page import="snmp.Discovery"%>
-<%@page import="controller.CeldaController"%>
+<%@page import="controller.ResumenController"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="controller.LoginController"%>
 <%@page import="modelo.entites.Usuario"%>
@@ -80,10 +80,15 @@
                             if (d.nodoIsOnline(n.getIp())) {
                         %>
                         <form action="/BallardWeb/Resumen" method="POST" >
-                            <input type="hidden" value="<%= n.getId()%>" name="<%= CeldaController.PARAM_NODO%>">
+                            <input type="hidden" value="<%= n.getId()%>" name="<%= ResumenController.PARAM_NODO%>">
                             <button class="btn btn-info" type="submit"   >
                                 Detalles
                             </button>
+                            <div class="progress" style="width: 100px;">
+                                <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    <span class="sr-only">50%</span>
+                                </div>
+                            </div>
                         </form>
                         <% } else {%>
                         <button class="btn btn-danger disabled"  type="submit" >
@@ -106,5 +111,6 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
+
     </body>
 </html>

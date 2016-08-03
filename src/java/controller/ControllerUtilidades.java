@@ -94,7 +94,7 @@ public class ControllerUtilidades extends HttpServlet {
             return;
         }
         snmp = new SnmpDataSource();
-        celda = (FuelCell) request.getAttribute(CeldaController.PARAM_CELDA);
+        celda = (FuelCell) request.getAttribute(ResumenController.PARAM_CELDA);
 
         String sysName = snmp.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING );
         request.setAttribute(SYS_NAME, sysName);
