@@ -15,6 +15,7 @@ import modelo.dao.interfaces.NodoDAO;
 import modelo.entites.FuelCell;
 import modelo.entites.Nodo;
 import modelo.entites.Usuario;
+import org.snmp4j.smi.Integer32;
 import snmp.SnmpDataSource;
 
 /**
@@ -27,6 +28,9 @@ public class ResumenController extends HttpServlet {
     public static final String PARAM_NODO = "id_nodo";
     public static final String PARAM_CELDA = "celda";
     public static final String PARAM_MODO = "modo";
+
+    public static final String PARAM_SYS_DESC = "sys_desc";
+    public static final String PARAM_SYS_LOCATION = "sys_location";
 
     public static final String PARAM_TIEMPO_ONLINE = "1";
     public static final String PARAM_MODELO = "2";
@@ -115,7 +119,15 @@ public class ResumenController extends HttpServlet {
         String modo = request.getParameter(PARAM_MODO);
         if (modo != null) {
             usuario.setModoResumen(modo);
+            RequestDispatcher rd = request.getRequestDispatcher("home_reportes.jsp");
+            rd.forward(request, response);
         }
+
+        String sysDesc = source.retrieveSnmpValue(FuelCell.SYS_DESCR);
+        request.setAttribute(PARAM_SYS_DESC, sysDesc);
+
+        String sysLocation = source.retrieveSnmpValue(FuelCell.SYS_LOCATION);
+        request.setAttribute(PARAM_SYS_LOCATION, sysLocation);
 
         String tiempoOnline = source.retrieveSnmpValue(FuelCell.SYSTEM_TOTAL_SYSTEM_RUNTIME);
         request.setAttribute(PARAM_TIEMPO_ONLINE, tiempoOnline);
@@ -129,71 +141,73 @@ public class ResumenController extends HttpServlet {
         String totalCiclosStack2 = source.retrieveSnmpValue(FuelCell.SYSTEM_STACK_2_CYCLES);
         request.setAttribute(PARAM_TOTAL_CICLOS_ST_2, totalCiclosStack2);
 
-        String estadoActual = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        String estadoActual = source.retrieveSnmpValue(FuelCell.SYSTEM_STATE_DESC);
         request.setAttribute(PARAM_ESTADO_ACTUAL, estadoActual);
 
-        String warning384 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        String warning384 = source.retrieveSnmpValue(FuelCell.WARNING_DESCRIPTION_VAL_384);
         request.setAttribute(PARAM_WARN_384, warning384);
 
-        String warning385 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        String warning385 = source.retrieveSnmpValue(FuelCell.WARNING_DESCRIPTION_VAL_385);
         request.setAttribute(PARAM_WARN_385, warning385);
 
-        String warning386 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        String warning386 = source.retrieveSnmpValue(FuelCell.WARNING_DESCRIPTION_VAL_386);
         request.setAttribute(PARAM_WARN_386, warning386);
 
-        String warning387 = source.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        String warning387 = source.retrieveSnmpValue(FuelCell.WARNING_DESCRIPTION_VAL_387);
         request.setAttribute(PARAM_WARN_387, warning387);
 
-        boolean systemfaulted = ConverterHelper.booleanValue("1");
+        boolean systemfaulted = ConverterHelper.booleanValue(source.retrieveSnmpValue(FuelCell.SYSTEM_FAULTED));
         request.setAttribute(PARAM_SYSTEM_FAULTED, systemfaulted);
 
-        boolean sdCardPresent = ConverterHelper.booleanValue("1");
+        boolean sdCardPresent = ConverterHelper.booleanValue(source.retrieveSnmpValue(FuelCell.SD_CARD_PRESENT));
         request.setAttribute(PARAM_SDCARD_PRESENT, sdCardPresent);
 
-        double voltageOutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double voltageOutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.OUTPUT_VOLTAGE));
+        voltageOutput = voltageOutput * 100;
+
         double voltageOutputPercent = ConverterHelper.porcentValue(voltageOutput, celda.getNominalVoltage());
         request.setAttribute(PARAM_VOLT_OUT, voltageOutput);
         request.setAttribute(PARAM_VOLT_OUT_PERCT, voltageOutputPercent);
 
-        double amperageoutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double amperageoutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.OUTPUT_CURRENT));
         double amperageOutputPercent = ConverterHelper.porcentValue(amperageoutput, FuelCell.MAX_AMP);
         request.setAttribute(PARAM_AMP_OUT, amperageoutput);
         request.setAttribute(PARAM_AMP_OUT_PERCT, amperageOutputPercent);
 
-        double potenciaOutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double potenciaOutput = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.GROSS_POWER));
         double potenciaOutputPercent = ConverterHelper.porcentValue(potenciaOutput, celda.getPowerRating());
         request.setAttribute(PARAM_POTENCIA_OUT, potenciaOutput);
         request.setAttribute(PARAM_POTENCIA_OUT_PERCT, potenciaOutputPercent);
 
-        double tempReformador = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double tempReformador = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.INPUTS_TEMP_REFORMER_BOTTOM));
         double tempReformadorPercent = ConverterHelper.porcentValue(tempReformador, FuelCell.MAX_TEMP_REFORMER);
         request.setAttribute(PARAM_TEMP_REFORMER, tempReformador);
         request.setAttribute(PARAM_TEMP_REFORMER_PERCT, tempReformadorPercent);
 
-        double tempMembrana = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double tempMembrana = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.INPUTS_TEMP_MEMBRANE));
         double tempMembranaPercent = ConverterHelper.porcentValue(tempMembrana, FuelCell.MAX_TEMP_MEMBRANA);
         request.setAttribute(PARAM_TEMP_MEMBRANA, tempMembrana);
         request.setAttribute(PARAM_TEMP_MEMBRANA_PERCT, tempMembranaPercent);
 
-        double combustible = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double combustible = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.INPUTS_FUEL_LEVEL));
         double combustiblePercent = ConverterHelper.porcentValue(combustible, FuelCell.TAN_SIZE);
         request.setAttribute(PARAM_COMBUSTIBLE, combustible);
         request.setAttribute(PARAM_COMBUSTIBLE_PERCT, combustiblePercent);
 
-        double consumo = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double consumo = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.GROSS_POWER));
         double consumoPercent = ConverterHelper.porcentValue(consumo, celda.getStandByConsumPowerPeek());
         request.setAttribute(PARAM_CONSUMO, consumo);
         request.setAttribute(PARAM_CONSUMO_PERCT, consumoPercent);
 
-        double potenciaGenerada = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.TEST_VALUE_DOUBLE));
+        double potenciaGenerada = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.CALCULATED_GROSS_POWER));
         double potenciaGeneradaPercent = ConverterHelper.porcentValue(potenciaGenerada, 5000);
         request.setAttribute(PARAM_POTENCIA_GENERADA, potenciaGenerada);
         request.setAttribute(PARAM_POTENCIA_GENERADA_PERCT, potenciaGeneradaPercent);
 
-        double diasParaMantencion = ConverterHelper.doubleValue("30");
+        double diasParaMantencion = ConverterHelper.doubleValue(source.retrieveSnmpValue(FuelCell.SYSTEM_TIME_UNTIL_FILTER_MAINT));
         request.setAttribute(PARAM_DIAS_TO_MANTENANCE, diasParaMantencion);
 
-        String diasUltimoArranque = source.retrieveSnmpValue(FuelCell.TEST_VALUE_INT);
+        String diasUltimoArranque = source.retrieveSnmpValue(FuelCell.PARAMS_DAYS_SINCE_LAST_SYSTEM_ONLINE);
         request.setAttribute(PARAM_DIAS_ULTIMO_ARRANQUE, diasUltimoArranque);
 
         RequestDispatcher rd = request.getRequestDispatcher("home.jsp");

@@ -25,7 +25,10 @@
         }
 
         celda = (FuelCell) request.getSession().getAttribute(ResumenController.PARAM_CELDA);
-
+        
+        String sysDesc = request.getAttribute(ResumenController.PARAM_SYS_DESC).toString();
+        String sysLocation = request.getAttribute(ResumenController.PARAM_SYS_LOCATION).toString();
+        
         String tiempoOnline = request.getAttribute(ResumenController.PARAM_TIEMPO_ONLINE).toString();
         String totalCiclos = request.getAttribute(ResumenController.PARAM_TOTAL_CICLOS).toString();
 
@@ -217,7 +220,7 @@
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Descripción</h3>
-                                                                                        <p><%= celda.getSysDescrib()%></p>
+                                                                                        <p><%= sysDesc %></p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
@@ -235,7 +238,7 @@
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Ubicación</h3>
-                                                                                        <p><%= celda.getSysLocation()%></p>
+                                                                                        <p><%= sysLocation %></p>
                                                                                     </div>
                                                                                 </li>
                                                                             </ul></td>

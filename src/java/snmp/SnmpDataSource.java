@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import modelo.entites.FuelCell;
-import modelo.entites.Nodo;
 import org.snmp4j.mp.SnmpConstants;
 
 /**
@@ -26,7 +25,7 @@ public class SnmpDataSource {
     }
 
     public SnmpDataSource(String ipAddress, int port) {
-        com = new SnmpCommunication("public", "public1", SnmpConstants.version2c, ipAddress, port);
+        com = new SnmpCommunication("public", "publico", SnmpConstants.version2c, ipAddress, port);
         this.ipAddress = ipAddress;
         this.port = port;
     }

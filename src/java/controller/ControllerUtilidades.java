@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modelo.entites.FuelCell;
+import modelo.entites.Nodo;
 import snmp.SnmpDataSource;
 
 /**
@@ -93,13 +94,15 @@ public class ControllerUtilidades extends HttpServlet {
             rd.forward(request, response);
             return;
         }
-        snmp = new SnmpDataSource();
-        celda = (FuelCell) request.getAttribute(ResumenController.PARAM_CELDA);
+        celda = (FuelCell) request.getSession().getAttribute(ResumenController.PARAM_CELDA);
+        Nodo n = celda.getNodo();
+        snmp = new SnmpDataSource(n.getIp(),n.getPuerto());
 
-        String sysName = snmp.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING );
+        
+        String sysName = snmp.retrieveSnmpValue(FuelCell.SYS_NAME);
         request.setAttribute(SYS_NAME, sysName);
         
-        String sysLocation = snmp.retrieveSnmpValue(FuelCell.TEST_VALUE_STRING);
+        String sysLocation = snmp.retrieveSnmpValue(FuelCell.SYS_LOCATION);
         request.setAttribute(SYS_LOCATION, sysLocation);
         
         boolean limitHeatersto500 = ConverterHelper.booleanValue("1");

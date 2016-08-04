@@ -16,6 +16,7 @@ import org.snmp4j.smi.Integer32;
 import org.snmp4j.smi.OID;
 import org.snmp4j.smi.OctetString;
 import org.snmp4j.smi.UdpAddress;
+import org.snmp4j.smi.UnsignedInteger32;
 import org.snmp4j.smi.Variable;
 import org.snmp4j.smi.VariableBinding;
 import org.snmp4j.transport.DefaultUdpTransportMapping;
@@ -63,11 +64,11 @@ public class SnmpCommunication {
         PDU pdu = new PDU();
         pdu.add(new VariableBinding(new OID(oid)));
         pdu.setType(PDU.GET);
-        pdu.setRequestID(new Integer32(1));
+//        pdu.setRequestID(new Integer32(1));
 
         // Create Snmp object for sending data to Agent
         Snmp snmp = new Snmp(transport);
-        ResponseEvent response = snmp.getNext(pdu, comtarget);
+        ResponseEvent response = snmp.get(pdu, comtarget);
 
         // Process Agent Response
         if (response != null) {
@@ -84,6 +85,11 @@ public class SnmpCommunication {
 
                 if (errorStatus == PDU.noError) {
                     respuestaSnmp.setVariable(responsePDU.get(0).getVariable());
+                    respuestaSnmp.setValue(responsePDU.get(0).toString());
+                    UnsignedInteger32 u = new UnsignedInteger32();
+                    
+                    System.out.println("VARIABLE:"+responsePDU.getVariableBindings());
+
                 }
             } else {
                 respuestaSnmp.setErrorResponse(true);
@@ -171,6 +177,7 @@ public class SnmpCommunication {
         private boolean timeOut;
         private Variable variable;
         private List<SnmpObject> snmpvariables;
+        private String value;
 
         public int getErrorStatus() {
             return errorStatus;
@@ -234,6 +241,14 @@ public class SnmpCommunication {
 
         public void setErrorResponse(boolean errorResponse) {
             this.errorResponse = errorResponse;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
         }
 
     }
