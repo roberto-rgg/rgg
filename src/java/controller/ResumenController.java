@@ -15,7 +15,6 @@ import modelo.dao.interfaces.NodoDAO;
 import modelo.entites.FuelCell;
 import modelo.entites.Nodo;
 import modelo.entites.Usuario;
-import org.snmp4j.smi.Integer32;
 import snmp.SnmpDataSource;
 
 /**
@@ -119,10 +118,18 @@ public class ResumenController extends HttpServlet {
         String modo = request.getParameter(PARAM_MODO);
         if (modo != null) {
             usuario.setModoResumen(modo);
-            RequestDispatcher rd = request.getRequestDispatcher("home_reportes.jsp");
-            rd.forward(request, response);
+            if (modo.equals("offline")) {
+                request.getRequestDispatcher("home_reportes.jsp").forward(request, response);
+                return;
+            }
         }
 
+        /** descomentar cuando la celda este en linea con ambiente de desarrollo
+        if (!source.isOnline()) {
+            request.getRequestDispatcher("discovery.jsp").forward(request, response);
+            return;
+        }
+**/
         String sysDesc = source.retrieveSnmpValue(FuelCell.SYS_DESCR);
         request.setAttribute(PARAM_SYS_DESC, sysDesc);
 

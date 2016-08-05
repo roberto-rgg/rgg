@@ -41,17 +41,18 @@
 
                             <h1>
                                 Reportes 
-                                <span class="page-header_subtitle">Bienvenido a Ballard Control</span>
-                                <form class="form">
-                                    <div class="form-group">
-                                        <input type="number" class="form-control" id="regular1">
-                                        <label for="regular1">Regular input</label>
-                                    </div>
-                                </form>
+                                <span class="page-header_subtitle">Bienvenido</span>
+
+
                             </h1>
                         </div>
                     </section>
-                    <h1>Estadisticas y reportes</h1>
+                    <h1 style="margin: 30px;" > Reportes </h1>
+                    
+                    <section class="page-content">
+                        <%@include file="/include/jsp/header_reportes.jsp" %>
+                    </section>
+                    
                 </section><!-- /#right-content -->
             </section><!-- /#right-content-wrapper -->
 
@@ -60,5 +61,26 @@
         <!--javascripts necesarios para la plantilla y sus funcionalidades -->
         <%@include file="include/html/full-js.html" %>
 
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 300px;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">En Espera de Resumen</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="progress">
+                            <div id="bar_loading" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                <span >Estableciendo Conexión</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+         
     </body>
 </html>

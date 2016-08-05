@@ -42,3 +42,14 @@ function discovery(ip, idNodo) {
     });
 
 }
+
+function load_home(){
+    $("#myModal").modal({
+  fadeDuration: 100
+});
+    
+function test_js(){
+    alert('hola soy el testing');
+}    
+    
+}

@@ -25,10 +25,10 @@
         }
 
         celda = (FuelCell) request.getSession().getAttribute(ResumenController.PARAM_CELDA);
-        
+
         String sysDesc = request.getAttribute(ResumenController.PARAM_SYS_DESC).toString();
         String sysLocation = request.getAttribute(ResumenController.PARAM_SYS_LOCATION).toString();
-        
+
         String tiempoOnline = request.getAttribute(ResumenController.PARAM_TIEMPO_ONLINE).toString();
         String totalCiclos = request.getAttribute(ResumenController.PARAM_TOTAL_CICLOS).toString();
 
@@ -74,8 +74,13 @@
 
     <!-- etiqueta head para home -->
     <%@include file="include/html/head-home.html" %>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/rgg/discovery.js"></script>
 
     <body class="dark-sidebar dark-header-brand container-fluid">
+        
         <div id="page-wrapper">
 
             <!-- SECCION MENU LATERAL -->
@@ -84,7 +89,7 @@
             <section id="right-content">
 
                 <!-- SECCION HEADER -->
-                <%@include file="include/jsp/header.jsp" %>
+                <%@include file="include/jsp/header.jsp" %> 
 
                 <section id="right-content-wrapper">
 
@@ -100,80 +105,7 @@
 
                     <section class="page-content">
                         <!-- SECCION ESTADISTICAS -->
-                        <div class="row">
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-body no-padding">
-                                        <div class="mini-card mini-card-primary">
-                                            <div class="mini-card-left">
-                                                <span>Fallas últimos 7 días</span>
-                                                <span class="badge badge-warning">4</span>
-                                            </div>
-                                            <div class="mini-card-right">
-                                                <div class="bemat-mini-chart bemat-mini-chart-primary">
-                                                    <span class="peity-line">1,2,0,0,1,0,0</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-body no-padding">
-                                        <div class="mini-card mini-card-success">
-                                            <div class="mini-card-left">
-                                                <span>Advertencias últimos 7 dias</span>
-                                                <span class="badge badge-warning">7</span>
-                                            </div>
-                                            <div class="mini-card-right">
-                                                <div class="bemat-mini-chart bemat-mini-chart-success">
-                                                    <span class="peity-bar">1,2,0,3,0,1,0</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-body no-padding">
-                                        <div class="mini-card mini-card-info">
-                                            <div class="mini-card-left">
-                                                <span>Arranques últimos 7 días</span>
-                                                <span class="badge badge-warning">6</span>
-                                            </div>
-                                            <div class="mini-card-right">
-                                                <div class="bemat-mini-chart bemat-mini-chart-info">
-                                                    <span class="peity-line">1,4,1,0</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-lg-3 col-sm-6">
-                                <div class="panel panel-default">
-                                    <div class="panel-body no-padding">
-                                        <div class="mini-card mini-card-danger">
-                                            <div class="mini-card-left">
-                                                <span>Potencia generada últimos 5 días</span>
-                                                <span class="badge badge-warning ">4</span>
-                                            </div>
-                                            <div class="mini-card-right">
-                                                <div class="bemat-mini-chart bemat-mini-chart-danger">
-                                                    <span class="peity-bar">0,0,1,0,3</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
+                        <%@include file="/include/jsp/header_reportes.jsp" %>
 
                         <!-- SECCION RESUMEN -->
                         <h1>Caracteristicas</h1>
@@ -220,7 +152,7 @@
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Descripción</h3>
-                                                                                        <p><%= sysDesc %></p>
+                                                                                        <p><%= sysDesc%></p>
                                                                                     </div>
                                                                                 </li>
                                                                                 <li class="list-item list-2-line">
@@ -238,7 +170,7 @@
                                                                                 <li class="list-item list-2-line">
                                                                                     <div class="list-item-text layout-column">
                                                                                         <h3>Ubicación</h3>
-                                                                                        <p><%= sysLocation %></p>
+                                                                                        <p><%= sysLocation%></p>
                                                                                     </div>
                                                                                 </li>
                                                                             </ul></td>
@@ -400,18 +332,17 @@
                                 </div>
                             </div>
                         </div>
-                        </div>
+
 
                     </section><!-- /#page-content -->
 
-
                 </section><!-- /#right-content -->
             </section><!-- /#right-content-wrapper -->
-
         </div>
 
         <!--javascripts necesarios para la plantilla y sus funcionalidades -->
         <%@include file="include/html/full-js.html" %>
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script src="js/rgg/discovery.js"></script>
     </body>
 </html>

@@ -23,16 +23,15 @@ public abstract class ConnectionDataBase {
 
     public ConnectionDataBase() {
 
+    }
+
+    public static Connection getConnection() {
         try {
             Class.forName(DRIVER);
             connection = DriverManager.getConnection(SERVIDOR, USUARIO, CLAVE);
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Conexion Fallida : " + e.getMessage());
         }
-
-    }
-
-    public static Connection getConnection() {
         return connection;
     }
 

@@ -41,7 +41,7 @@
                         <li><a href="#"><i class="material-icons">settings</i>Ajustes</a></li>
                         <li class="divider"></li>
                         <li class="divider"></li>
-                        <li><a href="#"><i class="material-icons">exit_to_app</i> Cerrar Sesión</a></li>
+                        <li><a href="/BallardWeb/Logout"><i class="material-icons">exit_to_app</i> Cerrar Sesión</a></li>
                     </ul>
                 </div>
             </div>
@@ -52,29 +52,35 @@
             <ul>
                 <% if(usuario.getModoResumen().equals(Usuario.RESUMEN_MODO_ONLINE)) {  %>
                 <li>
-                    <a href="/BallardWeb/Resumen" >
+                    <a href="/BallardWeb/Resumen"  >
                         <span class="menu-item-ico"><i class="material-icons">dashboard</i></span>
                         <span class="menu-item-name">Resumen Estado Actual</span>
                     </a>
                 </li>
                 <li>
                     <a href="/BallardWeb/Utilidades">
-                        <span class="menu-item-ico"><i class="material-icons">extension</i></span>
+                        <span class="menu-item-ico"><i class="material-icons">build</i></span><!-- icon anterior extension -->
                         <span class="menu-item-name">Utilidades</span>
                     </a>
                 </li>
                 <% } %>
                 
                 <li>
-                    <a href="home_reportes.jsp">
+                    <a href="home_reportes.jsp" >
                         <span class="menu-item-ico"><i class="material-icons">event</i></span>
                         <span class="menu-item-name">Reportes</span>
                     </a>
                 </li>
                 <li>
-                    <a href="home_estadisticas.jsp">
+                    <a href="home_estadisticas.jsp" onclick="test_js();">
                         <span class="menu-item-ico"><i class="material-icons">insert_chart</i></span>
                         <span class="menu-item-name">Estadisticas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="discovery.jsp" >
+                        <span class="menu-item-ico"><i class="material-icons">pin_drop</i></span>
+                        <span class="menu-item-name">Discovery</span>
                     </a>
                 </li>
             
@@ -96,3 +102,4 @@
         </nav><!-- END: nav#sidebar -->	
     </div>
 </aside>
+        

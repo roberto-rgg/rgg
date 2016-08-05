@@ -4,6 +4,7 @@
     Author     : Roberto
 --%>
 
+<%@page import="modelo.report.ServiceReportDataBase"%>
 <%@page import="controller.LoginController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,8 +15,12 @@
         <link href="css/style-main.css" rel="stylesheet">
         <title>Inicio</title>
     </head>
+    <%
+
+
+    %>
     <body>
-        
+
         <div class="panel panel-default" style="margin-top: 50px;width: 40%;margin-left: 50px;">
             <div class="panel-body">
                 <div class="panel-heading">
@@ -36,15 +41,14 @@
 
                     </form>
 
-                    <%                        
-                        String mensaje = "";
+                    <%                        String mensaje = "";
                         if (request.getAttribute(LoginController.ERROR_MENSAJE) != null) {
                             mensaje = request.getAttribute(LoginController.ERROR_MENSAJE).toString();
                     %>
                     <div class="alert alert-danger" role="alert" style="margin-top: 20px;">
                         <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                         <span class="sr-only">Error:</span>
-                        <%= mensaje %>
+                        <%= mensaje%>
                     </div>
                     <%  }%>
 

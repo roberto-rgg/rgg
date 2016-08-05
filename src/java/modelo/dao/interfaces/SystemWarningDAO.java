@@ -5,7 +5,9 @@
  */
 package modelo.dao.interfaces;
 
+import java.util.Date;
 import java.util.List;
+import modelo.entites.FuelCell;
 import modelo.entites.reports.SystemWarning;
 
 /**
@@ -15,8 +17,17 @@ import modelo.entites.reports.SystemWarning;
 public interface SystemWarningDAO {
 
     public boolean create(SystemWarning systemWarning);
+
     public SystemWarning read(int id);
+
+    public List<SystemWarning> read(FuelCell celda);
+
+    public List<SystemWarning> read(FuelCell celda,Date from,Date to);
+    
+    public List<SystemWarning> read(FuelCell celda,Date day);
+    
     public List<SystemWarning> read();
+
     public List<SystemWarning> readLastDays(int days);
 
 }

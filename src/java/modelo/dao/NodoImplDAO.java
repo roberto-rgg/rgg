@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import static modelo.dao.ConnectionDataBase.getConnection;
 import modelo.dao.interfaces.NodoDAO;
 import modelo.entites.Nodo;
 import modelo.entites.Usuario;
@@ -25,6 +24,7 @@ public class NodoImplDAO extends ConnectionDataBase implements NodoDAO{
     @Override
     public Nodo read(int id){
         Connection conn = getConnection();
+        
         PreparedStatement preparedStement = null;
         ResultSet resultSet = null;
         String sql = "SELECT * FROM nodo WHERE id = ? " ;
@@ -108,6 +108,7 @@ public class NodoImplDAO extends ConnectionDataBase implements NodoDAO{
         }
 
         return nodos;
+                
     }
     
     @Override

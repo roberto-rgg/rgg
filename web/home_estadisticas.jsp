@@ -45,10 +45,12 @@
                             </h1>
                         </div>
                     </section>
-                    <h1>Estadisticas y reportes</h1>
+                    <h1 style="margin: 30px;" >Estadisticas y reportes</h1>
+            
                 </section><!-- /#right-content -->
+            
             </section><!-- /#right-content-wrapper -->
-
+            
         </div>
 
         <!--javascripts necesarios para la plantilla y sus funcionalidades -->
