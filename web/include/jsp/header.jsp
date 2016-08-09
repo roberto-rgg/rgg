@@ -30,19 +30,8 @@
                         <div class="avatar">
 
                         </div>
-                        <div class="user">
-                            <span class="username">Generadores</span>
-                        </div>
-                        <span class="expand-ico"><i class="material-icons">expand_more</i></span>
+                        
                     </a>
-                    <ul class="dropdown-menu dropdown-menu-right">
-                        <li><a href="#"><i class="material-icons">exit_to_app</i>Generador 1</a></li>
-                        <li><a href="#"><i class="material-icons">exit_to_app</i>Generador 2</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="material-icons">exit_to_app</i>Generador 3</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><i class="material-icons">exit_to_app</i>Generador 4</a></li>
-                    </ul>
                 </li><!-- /#user-profile -->
             </ul><!-- /.navbar-right -->					
 

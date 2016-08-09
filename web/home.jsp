@@ -15,6 +15,17 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> 
 <html class="no-js"> <!--<![endif]-->
+    <head>
+        <!-- etiqueta head para home -->
+        <%@include file="include/html/head-home.html" %>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/rgg/discovery.js"></script>
+
+
+    </head>
+
     <%! private FuelCell celda;%>
 
     <%
@@ -72,15 +83,9 @@
 
     %>
 
-    <!-- etiqueta head para home -->
-    <%@include file="include/html/head-home.html" %>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/bootstrap.min.js"></script>
-        <script src="js/rgg/discovery.js"></script>
 
     <body class="dark-sidebar dark-header-brand container-fluid">
-        
+
         <div id="page-wrapper">
 
             <!-- SECCION MENU LATERAL -->

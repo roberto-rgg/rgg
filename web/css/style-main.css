@@ -13,3 +13,24 @@ and open the template in the editor.
     padding: 10px;
 }
 
+.table-discovery{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.progress-bar-nodo{
+    width: 200px; 
+    margin: 0 auto;
+}
+
+.panel-discovery{
+    width: 85%;
+    margin: 0 auto;
+    margin-top: 70px;
+}
+
+.panel-title-nodos{
+    margin-left: 20px;
+}
+
+

@@ -13,54 +13,67 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/style-main.css" rel="stylesheet">
+        <!-- etiqueta head para home -->
+        <%@include file="include/html/head-home.html" %>
         <title>Inicio</title>
     </head>
-    <%
 
+    <body id="page-authentication" class="container-fluid" >
 
-    %>
-    <body>
+        <div id="authentication-box" class="authentication-style1">
+            <div class="authentication-box-wrapper">
+                <div class="panel panel-default">
+                    <div class="panel-body no-padding">
 
-        <div class="panel panel-default" style="margin-top: 50px;width: 40%;margin-left: 50px;">
-            <div class="panel-body">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Iniciar Sesión</h3>
-                </div>
-                <div class="panel-body">
-                    <form method="POST" action="/BallardWeb/Login" >
-                        <div class="form-group">
-                            <label for="input_usuario">Correo Electrónico</label>
-                            <input id="input_usuario" required="true" type="email" class="form-control"  name="input_correo" placeholder="Usuario">
-                        </div>
-                        <div class="form-group">
-                            <label for="input_clave">Contraseña</label>
-                            <input id="input_clave" required="true" type="password" class="form-control"  name="input_clave" placeholder="Contraseña">
+                        <div class="authentication-header">
+                            <div class="logo-box logo-box-primary-light padding-top-5">
+                                <img src="img/logo.png" width="100%" style="margin-top:0px;">
+                            </div>
+                            <span style=" z-index: 0;">Ingrese con su cuenta</span>
                         </div>
 
-                        <button type="submit" class="btn btn-sm btn-primary">Ingresar Sistema</button>
+                        <div class="authentication-body">
+                            <%                        String mensaje = "";
+                                if (request.getAttribute(LoginController.ERROR_MENSAJE) != null) {
+                                    mensaje = request.getAttribute(LoginController.ERROR_MENSAJE).toString();
+                            %>
+                            <div class="alert alert-danger" role="alert" style="margin-top: 20px;">
+                                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+                                <span class="sr-only">Error:</span>
+                                <%= mensaje %>
+                            </div>
+                            <%  }%>
 
-                    </form>
+                            <form class="form" role="form" action="/BallardWeb/Login" method="POST">
+                                <div class="form-group floating-label">
+                                    <input type="text" class="form-control" id="input_usuario" name="input_correo">
+                                    <label for="input_usuario">Correo Electrónico</label>
+                                </div>
+                                <div class="form-group floating-label">
+                                    <input type="password" class="form-control" id="input_clave" name="input_clave">
+                                    <label for="input_clave">Contraseña</label>
+                                </div>
 
-                    <%                        String mensaje = "";
-                        if (request.getAttribute(LoginController.ERROR_MENSAJE) != null) {
-                            mensaje = request.getAttribute(LoginController.ERROR_MENSAJE).toString();
-                    %>
-                    <div class="alert alert-danger" role="alert" style="margin-top: 20px;">
-                        <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                        <span class="sr-only">Error:</span>
-                        <%= mensaje%>
+                                <button type="submit" class="btn btn-info btn-raised btn-block">Ingresar</button>
+                                <div class="authentication-body-footer margin-top-5">
+
+                                    <div class="text-right">
+                                        <a href="#">Olvido su contraseña?</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
                     </div>
-                    <%  }%>
-
+                </div>
+                <div class="text-center">
                 </div>
             </div>
+
         </div>
 
+        <!--javascripts necesarios para la plantilla y sus funcionalidades -->
+        <%@include file="include/html/full-js.html" %>
 
 
-        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
-        <script src="js/bootstrap.min.js"></script>
     </body>
 </html>

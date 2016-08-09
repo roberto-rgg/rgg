@@ -33,7 +33,7 @@
             <div id="userinfo">
                 <div class="btn-group">
                     <button type="button" class="btn btn-default-bright btn-flat dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <%= usuario.getCorreo() %>
+                        <%= usuario.getCorreo()%>
                         <i class="material-icons">arrow_drop_down</i>
                     </button>
                     <ul class="dropdown-menu">
@@ -50,7 +50,7 @@
         <!-- ACA VAN LOS LINKS A LOS DISTINTOS TIPOS DE CONTENIDO CENTRAL -->
         <nav id="sidebar">
             <ul>
-                <% if(usuario.getModoResumen().equals(Usuario.RESUMEN_MODO_ONLINE)) {  %>
+                <% if (usuario.getModoResumen().equals(Usuario.RESUMEN_MODO_ONLINE)) {  %>
                 <li>
                     <a href="/BallardWeb/Resumen"  >
                         <span class="menu-item-ico"><i class="material-icons">dashboard</i></span>
@@ -63,10 +63,9 @@
                         <span class="menu-item-name">Utilidades</span>
                     </a>
                 </li>
-                <% } %>
-                
+                <% }%>
                 <li>
-                    <a href="home_reportes.jsp" >
+                    <a href="home_reportes.jsp" data-toggle="modal" data-target="#modal_discovery" >
                         <span class="menu-item-ico"><i class="material-icons">event</i></span>
                         <span class="menu-item-name">Reportes</span>
                     </a>
@@ -83,23 +82,16 @@
                         <span class="menu-item-name">Discovery</span>
                     </a>
                 </li>
-            
                 <li class="nav-main-heading">
                     <span class="sidebar-mini-hide">Opciones</span>
                 </li>
                 <li>
-                    <a href="/BallardWeb/ControllerTest">
+                    <a href="#">
                         <span class="menu-item-ico"><i class="material-icons">insert_drive_file</i></span>
                         <span class="menu-item-name">Acerca de</span>
                     </a>
-
                 </li>
-               
-
-
-
             </ul>
         </nav><!-- END: nav#sidebar -->	
     </div>
 </aside>
-        

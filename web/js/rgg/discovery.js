@@ -43,13 +43,23 @@ function discovery(ip, idNodo) {
 
 }
 
-function load_home(){
+function load_homea() {
+
     $("#myModal").modal({
-  fadeDuration: 100
-});
-    
-function test_js(){
+        fadeDuration: 100
+    });
+    //alert("cargando home");
+}
+
+function test_js() {
     alert('hola soy el testing');
-}    
-    
+}
+
+function test_jquery() {
+    $(document).on("ready", function () {
+        $("#myModal").modal({
+            fadeDuration: 100
+        });
+    });
+
 }
