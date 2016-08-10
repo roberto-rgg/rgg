@@ -345,9 +345,11 @@
             </section><!-- /#right-content-wrapper -->
         </div>
 
+        
         <!--javascripts necesarios para la plantilla y sus funcionalidades -->
         <%@include file="include/html/full-js.html" %>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="js/rgg/discovery.js"></script>
+                
     </body>
 </html>

@@ -62,7 +62,7 @@
         <%@include file="include/html/full-js.html" %>
 
         <!-- Modal -->
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 300px;">
+        <div class="modal fade" id="modal_discovery_2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="margin-top: 300px;">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -81,6 +81,8 @@
                 </div>
             </div>
         </div>
+        
+       
          
     </body>
 </html>

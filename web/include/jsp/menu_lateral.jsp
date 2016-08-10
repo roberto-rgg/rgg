@@ -52,20 +52,20 @@
             <ul>
                 <% if (usuario.getModoResumen().equals(Usuario.RESUMEN_MODO_ONLINE)) {  %>
                 <li>
-                    <a href="/BallardWeb/Resumen"  >
+                    <a href="/BallardWeb/Resumen" >
                         <span class="menu-item-ico"><i class="material-icons">dashboard</i></span>
                         <span class="menu-item-name">Resumen Estado Actual</span>
                     </a>
                 </li>
                 <li>
-                    <a href="/BallardWeb/Utilidades">
+                    <a href="/BallardWeb/Utilidades"  >
                         <span class="menu-item-ico"><i class="material-icons">build</i></span><!-- icon anterior extension -->
                         <span class="menu-item-name">Utilidades</span>
                     </a>
                 </li>
                 <% }%>
                 <li>
-                    <a href="home_reportes.jsp" data-toggle="modal" data-target="#modal_discovery" >
+                    <a href="home_reportes.jsp" >
                         <span class="menu-item-ico"><i class="material-icons">event</i></span>
                         <span class="menu-item-name">Reportes</span>
                     </a>
@@ -86,7 +86,7 @@
                     <span class="sidebar-mini-hide">Opciones</span>
                 </li>
                 <li>
-                    <a href="#">
+                    <a href="#modal_discovery" data-toggle="modal"  >
                         <span class="menu-item-ico"><i class="material-icons">insert_drive_file</i></span>
                         <span class="menu-item-name">Acerca de</span>
                     </a>
