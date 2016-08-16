@@ -1,7 +1,6 @@
 package controller;
 
 import controller.helper.ConverterHelper;
-import controller.helper.FormatSnmpHelper;
 import java.io.IOException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -111,9 +110,9 @@ public class ResumenController extends HttpServlet {
                 celda = daoFuelCell.read(nodo.getId());
                 celda.setNodo(nodo);
                 request.getSession().setAttribute(PARAM_CELDA, celda);
-
             }
         }
+        
 
         source = new SnmpDataSource(celda.getNodo().getIp(), celda.getNodo().getPuerto());
 
@@ -138,8 +137,8 @@ public class ResumenController extends HttpServlet {
         String sysLocation = source.retrieveSnmpValue(FuelCell.SYS_LOCATION);
         request.setAttribute(PARAM_SYS_LOCATION, sysLocation);
 
-        String tiempoOnline = source.retrieveSnmpValue(FuelCell.SYSTEM_TOTAL_SYSTEM_RUNTIME);
-        tiempoOnline = ConverterHelper.formatSnmpDouble(tiempoOnline, 1);
+        String tiempoOnline = source.retrieveSnmpValue(FuelCell.SYS_UP_TIME);
+        tiempoOnline=tiempoOnline.replaceAll("days", "días");
         request.setAttribute(PARAM_TIEMPO_ONLINE, tiempoOnline);
 
         String totalCiclos = source.retrieveSnmpValue(FuelCell.SYSTEM_TOTAL_SYSTEM_CYCLES);

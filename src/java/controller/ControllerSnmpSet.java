@@ -13,6 +13,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import modelo.entites.FuelCell;
+import org.snmp4j.mp.SnmpConstants;
+import snmp.SnmpCommunication;
+import snmp.SnmpDataSource;
 
 /**
  *
@@ -20,8 +24,6 @@ import javax.servlet.http.HttpServletResponse;
  */
 @WebServlet(name = "ControllerSnmpSet", urlPatterns = {"/SnmpSet"})
 public class ControllerSnmpSet extends HttpServlet {
-
-    
 
     public static final String PARAM_PARAMETRO = "param_parametro";
     public static final String PARAM_TIPO = "param_tipo";
@@ -43,22 +45,22 @@ public class ControllerSnmpSet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        String p = request.getParameter("options");
+        SnmpDataSource snmp = null; 
 
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet ControllerSnmpSet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet ControllerSnmpSet at " + p + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        //String p = request.getParameter("options");
+        String p2 = request.getParameter("param_string");
+        //String p3 = request.getParameter("param_number");
+        FuelCell celda = (FuelCell) request.getSession().getAttribute(ResumenController.PARAM_CELDA);
+
+        if (celda != null) {
+            if (p2 != null) {
+                snmp = new  SnmpDataSource(celda.getNodo().getIp(), celda.getNodo().getPuerto());
+                String  r = snmp.sendSetStringParam(FuelCell.SET_SYS_NAME, p2);
+                System.out.println("respuesta:" + r);
+            }
         }
-        
-         RequestDispatcher rd = request.getRequestDispatcher("home_utilidades.jsp");
+
+        RequestDispatcher rd = request.getRequestDispatcher("Resumen");
         rd.forward(request, response);
     }
 

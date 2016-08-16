@@ -53,13 +53,13 @@
                     <%     } else if (tipoParametro == ControllerSnmpSet.TIPO_STRING) {%>
 
                     <div class="form-group">
-                        <input type="text" required="true" class="form-control" id="regular1" value="<%= parametro%>" >
+                        <input type="text" required="true" name="param_string" class="form-control" id="regular1" value="<%= parametro%>" >
                         <label for="regular1">Valor</label>
                     </div>
                     <% } else if (tipoParametro == ControllerSnmpSet.TIPO_INT) {%>
 
                     <div class="form-group">
-                        <input type="number" required="true" class="form-control" id="regular1" value="<%= parametro%>" >
+                        <input type="number" required="true" name="param_number" class="form-control" id="regular1" value="<%= parametro%>" >
                         <label for="regular1">Valor</label>
                     </div>
 

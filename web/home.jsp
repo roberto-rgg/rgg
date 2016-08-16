@@ -17,11 +17,9 @@
 <html class="no-js"> <!--<![endif]-->
     <head>
         <!-- etiqueta head para home -->
-        <%@include file="include/html/head-home.html" %>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="js/bootstrap.min.js"></script>
         <script src="js/rgg/discovery.js"></script>
+         <%@include file="include/html/head-home.html" %>
 
 
     </head>
@@ -308,6 +306,7 @@
                                     </div>
                                 </div>
                             </div>
+                                     
                             <div class="col-lg-3 col-sm-6">
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
@@ -345,11 +344,9 @@
             </section><!-- /#right-content-wrapper -->
         </div>
 
-        
+
         <!--javascripts necesarios para la plantilla y sus funcionalidades -->
         <%@include file="include/html/full-js.html" %>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-        <script src="js/rgg/discovery.js"></script>
-                
+
     </body>
 </html>

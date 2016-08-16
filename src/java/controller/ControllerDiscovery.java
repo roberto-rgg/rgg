@@ -36,9 +36,12 @@ public class ControllerDiscovery extends HttpServlet {
 
         String ip = request.getParameter("ip_nodo");
         Discovery discovery = new Discovery();
-        System.out.println("peticion nodo:" + ip);
+        System.out.println("peticion nodo:" + ip );
 
-        if (discovery.nodoIsOnline(ip)) {
+        boolean estado = discovery.nodoIsOnline(ip.trim()); 
+        Discovery d = new Discovery();
+        
+        if (estado) {
             response.getWriter().write("conectado");
         } else {
             response.getWriter().write("desconectado");

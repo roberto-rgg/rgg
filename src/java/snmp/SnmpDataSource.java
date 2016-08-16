@@ -50,7 +50,15 @@ public class SnmpDataSource {
         }
         return respuestaSnmp.isErrorResponse();
     }
-    
+   
+    public String sendSetStringParam(String oidValue,String value){
+        try{
+            respuestaSnmp = com.sendSetStringParam(oidValue, value);
+        } catch (Exception e){
+            return  null;
+        }
+        return "";
+    }
     public String retrieveSnmpValue(String oid){
        
         if(oid.equals(FuelCell.TEST_VALUE_STRING)) {

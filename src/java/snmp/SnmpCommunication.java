@@ -86,9 +86,8 @@ public class SnmpCommunication {
                 if (errorStatus == PDU.noError) {
                     respuestaSnmp.setVariable(responsePDU.get(0).getVariable());
                     respuestaSnmp.setValue(responsePDU.get(0).toString());
-                    UnsignedInteger32 u = new UnsignedInteger32();
-                    
-                    System.out.println("VARIABLE:"+responsePDU.getVariableBindings());
+
+                    System.out.println("VARIABLE: " + responsePDU.getVariableBindings());
 
                 }
             } else {
@@ -152,6 +151,125 @@ public class SnmpCommunication {
                     }
                     respuestaSnmp.setSnmpvariables(oidList);
                 }
+            } else {
+                respuestaSnmp.setErrorResponse(true);
+                respuestaSnmp.setNullPDU(true);
+            }
+        } else {
+            respuestaSnmp.setErrorResponse(true);
+            respuestaSnmp.setTimeOut(true);
+        }
+        snmp.close();
+        return respuestaSnmp;
+    }
+
+    
+    public String sendSetParametroSTRING(String oidValue, String sysContactValue) throws IOException {
+        String respuesta = "";
+        System.out.println("SNMP SET Demo");
+        // Create TransportMapping and Listen
+        TransportMapping transport = new DefaultUdpTransportMapping();
+        transport.listen();
+        // Create Target Address object
+        CommunityTarget comtarget = new CommunityTarget();
+        comtarget.setCommunity(new OctetString("publico"));
+        comtarget.setVersion(versionSnmp);
+        comtarget.setAddress(new UdpAddress(ipAddress + "/" + port));
+        comtarget.setRetries(2);
+        comtarget.setTimeout(1000);
+        // Create the PDU object
+        PDU pdu = new PDU();
+        // Setting the Oid and Value for sysContact variable
+        OID oid = new OID(oidValue);
+        VariableBinding varBind = new VariableBinding(oid, new OctetString(sysContactValue));
+        pdu.add(varBind);
+        pdu.setType(PDU.SET);
+        pdu.setRequestID(new Integer32(1));
+
+        // Create Snmp object for sending data to Agent
+        Snmp snmp = new Snmp(transport);
+        ResponseEvent response = snmp.set(pdu, comtarget);
+
+        // Process Agent Response
+        if (response != null) {
+            System.out.println("\nResponse:\nGot Snmp Set Response from Agent");
+            PDU responsePDU = response.getResponse();
+
+            if (responsePDU != null) {
+                int errorStatus = responsePDU.getErrorStatus();
+                int errorIndex = responsePDU.getErrorIndex();
+                String errorStatusText = responsePDU.getErrorStatusText();
+
+                if (errorStatus == PDU.noError) {
+                    respuesta = "Snmp Set Response = " + responsePDU.getVariableBindings();
+                    System.out.println(respuesta);
+
+                } else {
+                    String error = "Error: Request Failed \n";
+                    error = error.concat("Error Status = " + errorStatus + "\n");
+                    error = error.concat("Error index = " + errorIndex + "\n");
+                    error = error.concat("Error status text = " + errorStatusText + "\n");
+                    System.out.println(error);
+                }
+            } else {
+                System.out.println("Error: response PDU is null");
+            }
+        } else {
+            System.out.println("Error: Agent timeout");
+        }
+        snmp.close();
+        return respuesta;
+    }
+    
+    public SnmpCustomResponse sendSetStringParam(String oidValue, String valueSnmp) throws IOException {
+
+        SnmpCustomResponse respuestaSnmp = new SnmpCustomResponse();
+        respuestaSnmp.setNullPDU(false);
+        respuestaSnmp.setTimeOut(false);
+        respuestaSnmp.setErrorResponse(false);
+        // Create TransportMapping and Listen
+        TransportMapping transport = new DefaultUdpTransportMapping();
+        transport.listen();
+        // Create Target Address object
+        CommunityTarget comtarget = new CommunityTarget();
+        comtarget.setCommunity(new OctetString(communityWrite));
+        comtarget.setVersion(versionSnmp);
+        comtarget.setAddress(new UdpAddress(ipAddress + "/" + port));
+        comtarget.setRetries(2);
+        comtarget.setTimeout(1000);
+        // Create the PDU object
+        PDU pdu = new PDU();
+        // Setting the Oid and Value for sysContact variable
+        OID oid = new OID(oidValue);
+        VariableBinding varBind = new VariableBinding(oid, new OctetString(valueSnmp));
+        pdu.add(varBind);
+        pdu.setType(PDU.SET);
+        pdu.setRequestID(new Integer32(1));
+        // Create Snmp object for sending data to Agent
+        Snmp snmp = new Snmp(transport);
+        ResponseEvent response = snmp.set(pdu, comtarget);
+
+        // Process Agent Response
+        if (response != null) {
+            System.out.println("\nResponse:\nGot Snmp Set Response from Agent");
+            PDU responsePDU = response.getResponse();
+
+            if (responsePDU != null) {
+                int errorStatus = responsePDU.getErrorStatus();
+                int errorIndex = responsePDU.getErrorIndex();
+                String errorStatusText = responsePDU.getErrorStatusText();
+
+                respuestaSnmp.setErrorIndex(errorIndex);
+                respuestaSnmp.setErrorStatus(errorStatus);
+                respuestaSnmp.setErrorText(errorStatusText);
+                respuestaSnmp.setErrorResponse(true);
+
+                if (errorStatus == PDU.noError) {
+
+                    respuestaSnmp.setVariable(responsePDU.get(0).getVariable());
+                    respuestaSnmp.setValue(responsePDU.get(0).toString());
+
+                } 
             } else {
                 respuestaSnmp.setErrorResponse(true);
                 respuestaSnmp.setNullPDU(true);

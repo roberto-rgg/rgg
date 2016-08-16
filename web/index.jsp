@@ -4,6 +4,7 @@
     Author     : Roberto
 --%>
 
+<%@page import="snmp.Discovery"%>
 <%@page import="modelo.report.ServiceReportDataBase"%>
 <%@page import="controller.LoginController"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -17,7 +18,9 @@
         <%@include file="include/html/head-home.html" %>
         <title>Inicio</title>
     </head>
-
+    <%
+        
+        %>
     <body id="page-authentication" class="container-fluid" >
 
         <div id="authentication-box" class="authentication-style1">
